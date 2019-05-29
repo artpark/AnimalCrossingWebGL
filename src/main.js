@@ -29,14 +29,17 @@ function main() {
   // Add uniforms
   var idMatrix = new Matrix4();
   shader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
-
   shader.addUniform("u_Sampler", "sampler2D", new Matrix4().elements);
   shader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
   shader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
 
+  // Create our player
   var player = new Player(shader);
 
+  // Create our input handler
   var inputHandler = new InputHandler(canvas, scene, camera, player);
+  // Update the movement with every frame
+  inputHandler.update();
 
   // Load cobblestone texture and add cube to the scene with that texture.
   inputHandler.readTexture("objs/cobble.jpg", function(image) {

@@ -11,107 +11,96 @@ class InputHandler {
      * Initializes the event handeling functions within the program.
      */
     constructor(canvas, scene, camera, player) {
-      this.canvas = canvas;
-      this.scene  = scene;
-      this.camera = camera;
-      this.player = player;
+        this.canvas = canvas;
+        this.scene  = scene;
+        this.camera = camera;
+        this.player = player;
 
-      this.clicking = false;
+        this.clicking = false;
 
-      _inputHandler = this;
+        _inputHandler = this;
+        
+        // Input booleans
+        this.left = false;
+        this.right = false;
+        this.up = false;
+        this.down = false;
 
-      // Mouse Events
-      //this.canvas.onmousedown = function(ev) { _inputHandler.mouseDown(ev) };
-      //this.canvas.onmouseup   = function(ev) { _inputHandler.mouseUp(ev) };
+        // Movement constants
+        this.truckSpeed = 0.3;
+        this.dollySpeed = 0.3;
 
-      //this.canvas.onmousemove = function(ev) { _inputHandler.mouseMove(ev) };
+        // Keyboard Events
+        document.addEventListener('keydown', function(ev) { _inputHandler.keyDown(ev); }, false);
+        document.addEventListener('keyup',   function(ev) { _inputHandler.keyUp(ev);   }, false);
 
-      
-
-      // Keyboard Events
-      document.addEventListener('keydown', function(ev) { _inputHandler.keyDown(ev); }, false);
-      document.addEventListener('keyup',   function(ev) { _inputHandler.keyUp(ev);   }, false);
-
-      //document.getElementById("webgl").addEventListener("wheel", zoom);
-      //document.addEventListener("wheel", function(ev) {_inputHandler.mouseWheel(ev); }, false);
     }
 
-    /**
-     * Function called upon mouse click.
-     */
-    /*mouseDown(ev) {
-        // Print x,y coordinates.
-        //console.log(ev.clientX, ev.clientY);
-        this.clicking = true;
-    }
-
-    mouseUp(ev) {
-         this.clicking = false;
-    }
-
-    mouseMove(ev) {
-        var movementX = ev.movementX;
-        var movementY = ev.movementY;
-
-        if (this.clicking) {
-            this.camera.pan(movementX);
-            this.camera.tilt(movementY);
+    update()
+    {
+        // Movement left
+        if(_inputHandler.left) 
+        {
+            _inputHandler.camera.truck(-_inputHandler.truckSpeed);
+    
         }
-    }
-
-    mouseWheel(ev) {
-       var deltaY = ev.deltaY;
-       this.camera.fov(deltaY);
-    }*/
-
-    keyUp(ev) {
-        var keyName = event.key;
-        //console.log("key up", keyName);
+        // Movement right
+        if(_inputHandler.right)
+        {
+            _inputHandler.camera.truck(_inputHandler.truckSpeed);
+    
+        }
+        // Movement up
+        if(_inputHandler.up)
+        {
+            _inputHandler.camera.dolly(-_inputHandler.dollySpeed);
+    
+        }
+        // Movement down
+        if(_inputHandler.down)
+        {
+            _inputHandler.camera.dolly(_inputHandler.dollySpeed);
+        }
+        
+        _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
+        requestAnimationFrame(_inputHandler.update);
     }
 
     keyDown(ev) {
         var keyName = event.key;
-        //console.log("key down", keyName);
-
-        if(keyName == "a") {
-            this.camera.truck(-1);
-            this.player.moveHor(-1);
+        console.log("key down", keyName);
+    
+        if(keyName == "a" || keyName == "A" || keyName == "ArrowLeft") {
+          _inputHandler.left = true;
         }
-        if(keyName == "d") {
-            this.camera.truck(1);
-            this.player.moveHor(1);
+        if(keyName == "d" || keyName == "D" || keyName == "ArrowRight") {
+          _inputHandler.right = true;
         }
-        if(keyName == "w") {
-            this.camera.dolly(-1);
-            this.player.moveVer(-1);
+        if(keyName == "w" || keyName == "W" || keyName == "ArrowUp") {
+          _inputHandler.up = true;
         }
-        if(keyName == "s") {
-            this.camera.dolly(1);
-            this.player.moveVer(1);
+        if(keyName == "s" || keyName == "S" || keyName == "ArrowDown") {
+          _inputHandler.down = true;
         }
-
-        /*else if(keyName == "z") {
-            this.camera.swapPerspective();
-        }*/
-    }
-
-    /**
-     * Function called to read a selected file.
-     */
-    /*readSelectedFile() {
-        var fileReader = new FileReader();
-        var objFile = document.getElementById("fileInput").files[0];
-
-        if (!objFile) {
-            alert("OBJ file not set!");
-            return;
+      }
+    
+      keyUp(ev) {
+        var keyName = event.key;
+        console.log("key up", keyName);
+    
+        if(keyName == "a" || keyName == "A" || keyName == "ArrowLeft") {
+          _inputHandler.left = false;
         }
-
-        fileReader.readAsText(objFile);
-        fileReader.onloadend = function() {
-            alert(fileReader.result);
+        if(keyName == "d" || keyName == "D" || keyName == "ArrowRight") {
+          _inputHandler.right = false;
         }
-    }*/
+        if(keyName == "w" || keyName == "W" || keyName == "ArrowUp") {
+          _inputHandler.up = false;
+        }
+        if(keyName == "s" || keyName == "S" || keyName == "ArrowDown") {
+          _inputHandler.down = false;
+        }
+      }
 
     readTexture(src, onTexLoad) {
         // Create the image object

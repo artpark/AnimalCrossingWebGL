@@ -14,18 +14,18 @@ class Player extends Geometry {
    * @returns {Square} Square created
    */
   constructor(shader) {
-      super(shader);
+        super(shader);
 
-      this.Tx = 0;
-      this.Ty = 0;
-      this.Tz = 0;
+        this.Tx = 0;
+        this.Ty = 0;
+        this.Tz = 0;
 
-      this.vertices = this.generatePlayerVertices(this.Tx, this.Ty, this.Tz);
-      this.faces = {0: this.vertices};
-      //this.image = image;
+        this.vertices = this.generatePlayerVertices(this.Tx, this.Ty, this.Tz);
+        this.faces = {0: this.vertices};
+        //this.image = image;
 
-      // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
-      this.interleaveVertices();
+        // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
+        this.interleaveVertices();
   }
 
   generatePlayerVertices(Tx, Ty, Tz) {
