@@ -1,0 +1,78 @@
+<html lang="en">
+  <head>
+      <meta charset="utf-8"/>
+      <title> CMPS160 Base Code </title>
+  </head>
+
+  <body onload = "main()">
+    <canvas id="webgl" width="400" height="400">
+      Please use a browser that supports "canvas"
+    </canvas>
+
+    <!--FPS counter, pulled from a Stack Overflow thread-->
+    <script>
+        var elapsedTime = 0;
+        var frameCount = 0;
+        var lastTime = 0;
+
+        function drawScene() {
+            var now = new Date().getTime();
+
+            frameCount++;
+            elapsedTime += (now - lastTime);
+
+            lastTime = now;
+
+            if(elapsedTime >= 1000) {
+               fps = frameCount;
+               frameCount = 0;
+               elapsedTime -= 1000;
+
+               document.getElementById('fps').innerHTML = fps+" fps";
+            }
+        }
+
+        lastTime = new Date().getTime();
+        setInterval(drawScene,33);
+    </script>
+
+    <br>FPS:<div id="fps">--</div>
+    <!--ZOOM (SCROLL WHEEL):<div id="zoomDegree">0</div>
+    VIEW MODE (Z):<div id="viewMode">Perspective</div>-->
+    <!-- Buttons to load and print file content -->
+    <!--<br><br>
+    Select File: <input type="file" id="fileInput"/>
+    <button type="button" id="fileLoad">Print file content</button>-->
+
+    <!-- Example Slider -->
+    <!--<br><br>
+    Slider: <input type="range" min="54" max="70" value="110" class="slider" id="zoomSlider">-->
+
+    <!-- Include external libs -->
+    <script src = "lib/webgl-utils.js"></script>
+    <script src = "lib/webgl-render.js"></script>
+    <script src = "lib/webgl-debug.js"></script>
+    <script src = "lib/webgl-loader.js"></script>
+    <script src = "lib/cuon-utils.js"></script>
+    <script src = "lib/cuon-matrix.js"></script>
+
+    <!-- Include shaders -->
+    <script src = "src/graphics/shaders/shader.js"></script>
+    <script src = "src/graphics/shaders/asg4.js"></script>
+
+    <!-- Include Base code -->
+    <script src = "src/graphics/geometry/vertex.js"></script>
+    <script src = "src/graphics/geometry/geometry.js"></script>
+    <script src = "src/graphics/geometry/shapes/triangle.js"></script>
+    <script src = "src/graphics/geometry/shapes/cube.js"></script>
+    <script src = "src/graphics/geometry/shapes/plane.js"></script>
+    <script src = "src/graphics/geometry/shapes/skybox.js"></script>
+    <script src = "src/graphics/geometry/shapes/custom.js"></script>
+    <script src = "src/graphics/geometry/shapes/player.js"></script>
+    <script src = "src/graphics/renderer.js"></script>
+    <script src = "src/graphics/scene.js"></script>
+    <script src = "src/graphics/camera.js"></script>
+    <script src = "src/main.js"></script>
+    <script src = "src/input.js"></script>
+  </body>
+</html>
