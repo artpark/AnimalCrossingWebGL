@@ -12,7 +12,7 @@ class Camera {
     * @returns {Camera} Camera object created
     */
     constructor(shader) {
-        this.speed = 0.2;
+        this.speed = 0.1;
 
         // Camera view attributes
         this.eye     = new Vector3([0, 3, -3]);

@@ -20,7 +20,7 @@ function main() {
   initializeShaders(gl);
 
   // Create our player
-  var player = new Player(texturedShader);
+  var player = new Player(nonTexturedShader);
 
   // Create our input handler
   var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed player into inputhandler

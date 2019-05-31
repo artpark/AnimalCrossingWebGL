@@ -42,24 +42,25 @@ class InputHandler {
         if(_inputHandler.left) 
         {
             _inputHandler.camera.truck(-_inputHandler.truckSpeed);
-    
+            _inputHandler.player.faceAngle(-90);
         }
         // Movement right
         if(_inputHandler.right)
         {
             _inputHandler.camera.truck(_inputHandler.truckSpeed);
-    
+            _inputHandler.player.faceAngle(90);
         }
         // Movement up
         if(_inputHandler.up)
         {
             _inputHandler.camera.dolly(-_inputHandler.dollySpeed);
-    
+            _inputHandler.player.faceAngle(180);
         }
         // Movement down
         if(_inputHandler.down)
         {
             _inputHandler.camera.dolly(_inputHandler.dollySpeed);
+            _inputHandler.player.faceAngle(0);
         }
         
         _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
