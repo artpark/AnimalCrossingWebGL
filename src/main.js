@@ -1,4 +1,5 @@
-var shader = null;
+var texturedShader = null;
+var nonTexturedShader = null;
 
 function main() {
   // Retrieve the canvas from the HTML document
@@ -11,110 +12,35 @@ function main() {
     return;
   }
 
-  // Initialize the scene
+  // Initialize the scene and camera
   var scene = new Scene();
   var camera = new Camera();
-  var player = new Player(shader);
 
-  //var inputHandler = new InputHandler(canvas, scene, camera, player);
-
-  // Initialize shader
-  shader = new Shader(gl, ASG4_VSHADER, ASG4_FSHADER);
-
-  // Add attibutes
-  shader.addAttribute("a_Position");
-  shader.addAttribute("a_Color");
-  shader.addAttribute("a_TexCoord");
-
-  // Add uniforms
-  var idMatrix = new Matrix4();
-  shader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
-  shader.addUniform("u_Sampler", "sampler2D", new Matrix4().elements);
-  shader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
-  shader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+  // Initialize shaders
+  initializeShaders(gl);
 
   // Create our player
-  var player = new Player(shader);
+  var player = new Player(texturedShader);
 
   // Create our input handler
-  var inputHandler = new InputHandler(canvas, scene, camera, player);
-  // Update the movement with every frame
-  inputHandler.update();
+  var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed player into inputhandler
+  inputHandler.update();    // Update the movement with every frame
 
-  // Load cobblestone texture and add cube to the scene with that texture.
-  inputHandler.readTexture("objs/cobble.jpg", function(image) {
-      //var startCube = new Cube(shader, image, 0, 0, 0);
-      //scene.addGeometry(startCube);
+  // Draw the map
+  drawMap(inputHandler);
 
-      // Hardcoded array of world layout
-      // VALUES 1-4 specify regular stacks
-      // VALUE    5 specifies a door
-      var blocksArray = [[4, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 5, 5, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 4], 
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-                         [3, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 4, 5, 5, 4, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 3], 
-                         [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
-                         [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
-                         [3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [4, 5, 5, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 5, 4],
-                         [5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5],
-                         [5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5], 
-                         [4, 5, 5, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 5, 4],
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-                         [3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3], 
-                         [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
-                         [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
-                         [3, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 4, 5, 5, 4, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 3],
-                         [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
-                         [4, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 5, 5, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 4]];
-      // Generate cubes as specified by array
-      for (var i=0; i<blocksArray.length; i++) {
-          for (var j=0; j<blocksArray[0].length; j++) {
-              if (blocksArray[i][j] == 5) {
-                  //var cube = new Cube(shader, image, i, 2, j);
-                  //scene.addGeometry(cube);
-              }
-              else{
-                  for (var k=0; k<blocksArray[i][j]; k++) {
-                      //var cube = new Cube(shader, image, i, k, j);
-                      //scene.addGeometry(cube);
-                  }
-              }
-          }
-      }
-  })
-
+  // Add our player onto the map
   scene.addGeometry(player);
-
-  // Load grass texture and add ground plane to scene with that texture.
-  inputHandler.readTexture("objs/acgrass.png", function(image) {
-      var plane = new Plane(shader, image);
-      scene.addGeometry(plane);
-  })
 
   // Load skybox texture and add cube to scene with that texture.
   /*inputHandler.readTexture("objs/skybox.jpg", function(image) {
-      var skybox = new Skybox(shader, image);
+      var skybox = new Skybox(texturedShader, image);
       scene.addGeometry(skybox);
   })*/
 
   /*// Load grass texture and add ground plane to scene with that texture.
   inputHandler.readTexture("objs/grass.jpg", function(image) {
-      this.player = new Player(shader, image);
+      this.player = new Player(texturedShader, image);
       scene.addGeometry(this.player);
   })*/
 
@@ -122,3 +48,99 @@ function main() {
   renderer = new Renderer(gl, scene, camera);
   renderer.start();
 }
+
+// ========== FUNCTIONS ========== //
+
+function initializeShaders(gl)
+{
+  // Initialize textured shader
+  texturedShader = new Shader(gl, TEXTURED_VSHADER, TEXTURED_FSHADER);
+  // Add attibutes
+  texturedShader.addAttribute("a_Position");
+  texturedShader.addAttribute("a_Color");
+  texturedShader.addAttribute("a_TexCoord");
+  // Add uniforms
+  var idMatrix = new Matrix4();
+  texturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
+  texturedShader.addUniform("u_Sampler", "sampler2D", new Matrix4().elements);
+  texturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
+  texturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+
+  // Initialize non-textured shader
+  nonTexturedShader = new Shader(gl, NONTEXTURED_VSHADER, NONTEXTURED_FSHADER);
+  // Add attibutes
+  nonTexturedShader.addAttribute("a_Position");
+  nonTexturedShader.addAttribute("a_Color");
+  // Add uniforms
+  var idMatrix = new Matrix4();
+  nonTexturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
+  nonTexturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
+  nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+}
+
+function drawMap(inputHandler)
+{
+    inputHandler.readTexture("objs/cobble.jpg", function(image) {
+        //var startCube = new Cube(texturedShader, image, 0, 0, 0);
+        //scene.addGeometry(startCube);
+  
+        // Hardcoded array of world layout
+        // VALUES 1-4 specify regular stacks
+        // VALUE    5 specifies a door
+        var blocksArray = [[4, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 5, 5, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 4], 
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+                           [3, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 4, 5, 5, 4, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 3], 
+                           [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
+                           [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
+                           [3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [4, 5, 5, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 5, 4],
+                           [5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5],
+                           [5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5], 
+                           [4, 5, 5, 5, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 5, 4],
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+                           [3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3], 
+                           [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
+                           [4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4],
+                           [3, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 4, 5, 5, 4, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 3],
+                           [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3], 
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4],
+                           [4, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 5, 5, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 4]];
+        // Generate cubes as specified by array
+        for (var i=0; i<blocksArray.length; i++) {
+            for (var j=0; j<blocksArray[0].length; j++) {
+                if (blocksArray[i][j] == 5) {
+                    //var cube = new Cube(texturedShader, image, i, 2, j);
+                    //scene.addGeometry(cube);
+                }
+                else{
+                    for (var k=0; k<blocksArray[i][j]; k++) {
+                        //var cube = new Cube(texturedShader, image, i, k, j);
+                        //scene.addGeometry(cube);
+                    }
+                }
+            }
+        }
+    });
+
+    // Load grass texture and add ground plane to scene with that texture.
+    inputHandler.readTexture("objs/acgrass.png", function(image) {
+        var plane = new Plane(texturedShader, image);
+        inputHandler.scene.addGeometry(plane);
+    });
+}
+
+// ========== END OF FUNCTIONS ========== //

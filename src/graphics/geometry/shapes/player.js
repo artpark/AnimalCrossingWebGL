@@ -41,6 +41,13 @@ class Player extends Geometry {
       var vertex4  = new Vertex(-0.50+Tx, -0.50+Ty,  0.50+Tz);
       var vertex5  = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
       var vertex6  = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
+      vertex1.color = [1.0, 0.0, 0.0, 1.0];
+      vertex2.color = [1.0, 0.0, 0.0, 1.0];
+      vertex3.color = [1.0, 0.0, 0.0, 1.0];
+      vertex4.color = [1.0, 0.0, 0.0, 1.0];
+      vertex5.color = [1.0, 0.0, 0.0, 1.0];
+      vertex6.color = [1.0, 0.0, 0.0, 1.0];
+      
       /*vertex1.texCoord = [0.0, 0.0];
       vertex2.texCoord = [1.0, 0.0];
       vertex3.texCoord = [1.0, 1.0];
