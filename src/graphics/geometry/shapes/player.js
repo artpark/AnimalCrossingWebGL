@@ -14,18 +14,35 @@ class Player extends Geometry {
    * @returns {Square} Square created
    */
   constructor(shader) {
-      super(shader);
+        super(shader);
+        
+        this.Tx = 0;
+        this.Ty = 0;
+        this.Tz = 0;
 
-      this.Tx = 0;
-      this.Ty = 0;
-      this.Tz = 0;
+        this.vertices = this.generatePlayerVertices(this.Tx, this.Ty, this.Tz);
+        this.faces = {0: this.vertices};
+        //this.image = image;
 
-      this.vertices = this.generatePlayerVertices(this.Tx, this.Ty, this.Tz);
-      this.faces = {0: this.vertices};
-      //this.image = image;
+        this.currentAngle = 0;
+        this.lerpConstant = 0.04;
+        this.rotationMatrix = new Matrix4();
 
-      // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
-      this.interleaveVertices();
+        // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
+        this.interleaveVertices();
+  }
+
+  render()
+  {
+      this.modelMatrix.multiply(this.rotationMatrix);
+      super.render();
+  }
+
+  faceAngle(turnToAngle)
+  {
+    this.currentAngle = (this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle);
+    this.rotationMatrix.setRotate(this.currentAngle, 0, 1, 0);
+    console.log(this.currentAngle);
   }
 
   generatePlayerVertices(Tx, Ty, Tz) {
@@ -41,6 +58,7 @@ class Player extends Geometry {
       var vertex4  = new Vertex(-0.50+Tx, -0.50+Ty,  0.50+Tz);
       var vertex5  = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
       var vertex6  = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
+      
       /*vertex1.texCoord = [0.0, 0.0];
       vertex2.texCoord = [1.0, 0.0];
       vertex3.texCoord = [1.0, 1.0];
@@ -67,6 +85,9 @@ class Player extends Geometry {
       var vertex16 = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
       var vertex17 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
       var vertex18 = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
+      vertex13.color = [0.0, 1.0, 0.0, 1.0]
+      vertex14.color = [0.0, 1.0, 0.0, 1.0]
+      vertex15.color = [0.0, 1.0, 0.0, 1.0]
       /*vertex13.texCoord = [0.0, 0.0];
       vertex14.texCoord = [1.0, 0.0];
       vertex15.texCoord = [1.0, 1.0];
@@ -93,6 +114,12 @@ class Player extends Geometry {
       var vertex28 = new Vertex( 0.50+Tx, -0.50+Ty, -0.50+Tz);
       var vertex29 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
       var vertex30 = new Vertex( 0.50+Tx,  0.50+Ty, -0.50+Tz);
+      vertex25.color = [0.0, 1.0, 0.0, 1.0];
+      vertex26.color = [0.0, 1.0, 0.0, 1.0];
+      vertex27.color = [0.0, 1.0, 0.0, 1.0];
+      vertex28.color = [0.0, 1.0, 0.0, 1.0];
+      vertex29.color = [0.0, 1.0, 0.0, 1.0];
+      vertex30.color = [0.0, 1.0, 0.0, 1.0];
       /*vertex25.texCoord = [0.0, 0.0];
       vertex26.texCoord = [1.0, 0.0];
       vertex27.texCoord = [1.0, 1.0];
@@ -106,6 +133,7 @@ class Player extends Geometry {
       var vertex34 = new Vertex(-0.50+Tx, -0.50+Ty, -0.50+Tz);
       var vertex35 = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
       var vertex36 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
+      
       /*vertex31.texCoord = [0.0, 0.0];
       vertex32.texCoord = [1.0, 0.0];
       vertex33.texCoord = [1.0, 1.0];

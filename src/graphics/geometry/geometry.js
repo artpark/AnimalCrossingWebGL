@@ -13,17 +13,17 @@ class Geometry {
    * @returns {Geometry} Geomtric object created
    */
   constructor(shader) {
-      this.vertices = [];
-      this.shader = shader;
+    this.vertices = [];
+    this.shader = shader;
 
-      this.modelMatrix = new Matrix4();
+    this.modelMatrix = new Matrix4();
   }
 
   /**
    * A callback used to modify a geometry every frame (60 typically).
    */
   render() {
-      return
+    this.shader.setUniform("u_ModelMatrix", this.modelMatrix.elements);
   }
 
   /**

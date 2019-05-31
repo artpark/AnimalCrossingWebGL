@@ -1,0 +1,24 @@
+newmtl e
+Ka 0 0 0
+Kd 0.972549 0.972549 0.972549
+d 1
+Tr 1
+map_Ka e.png
+map_Kd e.png
+map_d e.png
+newmtl hair
+Ka 0 0 0
+Kd 0.972549 0.972549 0.972549
+d 1
+Tr 1
+map_Ka hair.png
+map_Kd hair.png
+map_d hair.png
+newmtl m
+Ka 0 0 0
+Kd 0.972549 0.972549 0.972549
+d 1
+Tr 1
+map_Ka m.png
+map_Kd m.png
+map_d m.png
