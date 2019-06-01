@@ -40,7 +40,15 @@ class Player extends Geometry {
 
   faceAngle(turnToAngle)
   {
-    this.currentAngle = (this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle);
+    if(this.currentAngle >= 270)
+    {
+      this.currentAngle -= 360;
+    }
+    if(this.currentAngle <= -270)
+    {
+      this.currentAngle += 360;
+    }
+    this.currentAngle = ((this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle) % 360);
     this.rotationMatrix.setRotate(this.currentAngle, 0, 1, 0);
     console.log(this.currentAngle);
   }
