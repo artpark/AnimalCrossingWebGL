@@ -20,11 +20,11 @@ function main() {
   // Initialize shaders
   initializeShaders(gl);
 
-  // Create our player
-  var player = new Player(nonTexturedShader);
+  // Create temp player (will be replaced after inputHandler initiated)
+  var player = new Player(texturedShader);
 
   // Create our input handler
-  var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed player into inputhandler
+  var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed temp player into inputhandler
   inputHandler.update();    // Update the movement with every frame
    
   // Draw the HUD continuously
@@ -38,7 +38,7 @@ function main() {
   
 
   // Add our player onto the map
-  scene.addGeometry(player);
+  //scene.addGeometry(player);
 
   // Load skybox texture and add cube to scene with that texture.
   /*inputHandler.readTexture("objs/skybox.jpg", function(image) {
@@ -327,6 +327,14 @@ function drawMap(inputHandler)
     inputHandler.readTexture("objs/acgrass.png", function(image) {
         var plane = new Plane(texturedShader, image);
         inputHandler.scene.addGeometry(plane);
+    });
+
+    // load player shirt texture, apply it to a Player object, and
+    // replace inputHandler's Player with the new textured object
+    inputHandler.readTexture("objs/playerface.png", function(image) {
+        //var headTex = inputHandler.readTexture("objs/playerface.png");
+        inputHandler.player = new Player(texturedShader, image);
+        inputHandler.scene.addGeometry(inputHandler.player);
     });
 }
 
