@@ -4,7 +4,8 @@ var nonTexturedShader = null;
 function main() {
   // Retrieve the canvas from the HTML document
   canvas = document.getElementById("webgl");
-
+  var hud = document.getElementById("hud"); 
+  var hudText = document.getElementById("hudText"); 
   // Retrieve WebGL rendering context
   var gl = getWebGLContext(canvas);
   if (!gl) {
@@ -25,9 +26,16 @@ function main() {
   // Create our input handler
   var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed player into inputhandler
   inputHandler.update();    // Update the movement with every frame
+   
+  // Draw the HUD continuously
+  var ctx = hud.getContext("2d");
+  var ctxText = hudText.getContext("2d");
+  updateHUD(ctx, ctxText);
 
   // Draw the map
   drawMap(inputHandler);
+
+  
 
   // Add our player onto the map
   scene.addGeometry(player);
@@ -76,6 +84,185 @@ function initializeShaders(gl)
   nonTexturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
   nonTexturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+}
+
+function updateHUD(ctx, ctxText)
+{
+    ctx.clearRect(0, 0, 800, 600);
+    ctxText.clearRect(0, 0, 800, 600);
+
+    drawDateTimeHUD(ctx, ctxText);
+    requestAnimationFrame(function() {
+        updateHUD(ctx, ctxText);
+    });
+}
+
+function drawDateTimeHUD(ctx, ctxText)
+{
+    var imgWidth = 192.2;
+    var imgHeight = 116.4;
+
+    // Draw the hud element image
+    var img = new Image();
+    img.src = "ui/datetimeui.png";
+    ctx.drawImage(img, 15, hud.height - imgHeight - 15, imgWidth, imgHeight);
+
+    // Draw the date text
+    var date = new Date();
+    ctxText.font = "25px Arial";
+    ctxText.fillStyle = "#421F0F";
+    
+    if (date.getMonth() < 10)   // MONTH
+    {
+        ctxText.fillText("0" + date.getMonth(), 35, hudText.height - imgHeight + 20);
+    }
+    else
+    {
+        ctxText.fillText(date.getMonth(), 35, hudText.height - imgHeight + 20);
+    }
+
+    ctxText.fillText("/", 70, hudText.height - imgHeight + 23); // SLASH
+
+    if (date.getDate() < 10)   // DATE
+    {
+        ctxText.fillText("0" + date.getDate(), 80, hudText.height - imgHeight + 25);
+    }
+    else
+    {
+        ctxText.fillText(date.getDate(), 80, hudText.height - imgHeight + 25);
+    }
+
+    // Draw the time text
+    ctxText.font = "40px Arial";
+    var isAM = date.getHours() < 12 ? true : false;
+
+    ctxText.fillStyle = "#FFFFFF";
+    ctxText.fillText(":", 87.5, hudText.height - imgHeight + 78);
+    ctxText.fillStyle = "#025660";
+    ctxText.fillText(":", 87.5, hudText.height - imgHeight + 77); // COLON 
+    
+
+    if(isAM)
+    {
+        // Special case, if hour is 0 write it as 12
+        if(date.getHours() == 0) 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText("12", 43, hudText.height - imgHeight + 80);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText("12", 43, hudText.height - imgHeight + 81);
+        }
+        else if(date.getHours() < 10) 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText(date.getHours(), 65, hudText.height - imgHeight + 80);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText(date.getHours(), 65, hudText.height - imgHeight + 81);
+        }
+        else 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText(date.getHours(), 43, hudText.height - imgHeight + 80);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText(date.getHours(), 43, hudText.height - imgHeight + 81);
+        }
+
+        if(date.getMinutes() < 10) 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText("0" + date.getMinutes(), 100, hudText.height - imgHeight + 80);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText("0" + date.getMinutes(), 100, hudText.height - imgHeight + 81);
+        }
+        else 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText(date.getMinutes(), 100, hudText.height - imgHeight + 80);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText(date.getMinutes(), 100, hudText.height - imgHeight + 81);
+        }
+
+        ctxText.font = "20px Arial";
+        ctxText.fillStyle = "#FFFFFF";
+        ctxText.fillText("AM", 150, hudText.height - imgHeight + 65);
+        ctxText.fillStyle = "#025660";
+        ctxText.fillText("AM", 150, hudText.height - imgHeight + 66);
+    }
+    else
+    {
+        // Special case, if hour is 0 write it as 12
+        if(date.getHours() == 12) 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText("12", 43, hudText.height - imgHeight + 81);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText("12", 43, hudText.height - imgHeight + 80);
+        }
+        else if(date.getHours() % 12 < 10) 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText(date.getHours() % 12, 65, hudText.height - imgHeight + 81);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText(date.getHours() % 12, 65, hudText.height - imgHeight + 80);
+        }
+        else 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText(date.getHours() % 12, 43, hudText.height - imgHeight + 81);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText(date.getHours() % 12, 43, hudText.height - imgHeight + 80);
+        }
+        
+        if(date.getMinutes() < 10) 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText("0" + date.getMinutes(), 100, hudText.height - imgHeight + 81);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText("0" + date.getMinutes(), 100, hudText.height - imgHeight + 80);
+        }
+        else 
+        {
+            ctxText.fillStyle = "#FFFFFF";
+            ctxText.fillText(date.getMinutes(), 100, hudText.height - imgHeight + 81);
+            ctxText.fillStyle = "#025660";
+            ctxText.fillText(date.getMinutes(), 100, hudText.height - imgHeight + 80);
+        }
+        ctxText.font = "20px Arial";
+        ctxText.fillStyle = "#FFFFFF";
+        ctxText.fillText("PM", 150, hudText.height - imgHeight + 66);
+        ctxText.fillStyle = "#025660";
+        ctxText.fillText("PM", 150, hudText.height - imgHeight + 65);
+    }
+
+    // Draw the day of the week text
+    ctxText.font = "30px Arial";
+    ctxText.fillStyle = "#421F0F";
+    var dayOfWeek = ""
+    switch(date.getDay())
+    {
+        case 0:
+            dayOfWeek = "Su";
+            break;
+        case 1:
+            dayOfWeek = "Mo";
+            break;
+        case 2:
+            dayOfWeek = "Tu";
+            break;
+        case 3:
+            dayOfWeek = "We";
+            break;
+        case 4:
+            dayOfWeek = "Th";
+            break;
+        case 5:
+            dayOfWeek = "Fr";
+            break;
+        case 6:
+            dayOfWeek = "Sa";
+            break;
+    }
+    ctxText.fillText(dayOfWeek, 137.5, hudText.height - imgHeight + 27.5);
 }
 
 function drawMap(inputHandler)
@@ -141,6 +328,19 @@ function drawMap(inputHandler)
         var plane = new Plane(texturedShader, image);
         inputHandler.scene.addGeometry(plane);
     });
+}
+
+// Puts text in center of canvas.
+function makeTextCanvas(text, width, height) {
+    textCtx.canvas.width  = width;
+    textCtx.canvas.height = height;
+    textCtx.font = "20px monospace";
+    textCtx.textAlign = "center";
+    textCtx.textBaseline = "middle";
+    textCtx.fillStyle = "black";
+    textCtx.clearRect(0, 0, textCtx.canvas.width, textCtx.canvas.height);
+    textCtx.fillText(text, width / 2, height / 2);
+    return textCtx.canvas;
 }
 
 // ========== END OF FUNCTIONS ========== //
