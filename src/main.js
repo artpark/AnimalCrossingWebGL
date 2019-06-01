@@ -4,8 +4,8 @@ var nonTexturedShader = null;
 function main() {
   // Retrieve the canvas from the HTML document
   canvas = document.getElementById("webgl");
-  var hud = document.getElementById('hud'); 
-
+  var hud = document.getElementById("hud"); 
+  var hudText = document.getElementById("hudText"); 
   // Retrieve WebGL rendering context
   var gl = getWebGLContext(canvas);
   if (!gl) {
@@ -28,7 +28,7 @@ function main() {
   inputHandler.update();    // Update the movement with every frame
    
   // Draw the HUD
-  drawHUD(hud);
+  drawHUD(hud, hudText);
 
   // Draw the map
   drawMap(inputHandler);
@@ -84,21 +84,24 @@ function initializeShaders(gl)
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
 }
 
-function drawHUD(hud)
+function drawHUD(hud, hudText)
 {
     var ctx = hud.getContext("2d");
-    
+    var ctxText = hudText.getContext("2d");
+
     // Draw the hud element image
     var img = new Image();
     img.onload = function () {
-      ctx.drawImage(img, 10, 10, 192.2, 116.4);
+      var imgWidth = 192.2;
+      var imgHeight = 116.4;
+      ctx.drawImage(img, 15, hud.height - imgHeight - 15, imgWidth, imgHeight);
     };
     img.src = "ui/datetimeui.png";
 
     // Draw the time and date HUDs
     var date = new Date();
-    ctx.font = "30px Arial";
-    ctx.fillText(date.getMonth() + "/" + date.getDate() , 10, 50);
+    ctxText.font = "30px Arial";
+    ctxText.fillText(date.getMonth() + "/" + date.getDate() , 10, 50);
 }
 
 function drawMap(inputHandler)
