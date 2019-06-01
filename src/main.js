@@ -4,6 +4,7 @@ var nonTexturedShader = null;
 function main() {
   // Retrieve the canvas from the HTML document
   canvas = document.getElementById("webgl");
+  var hud = document.getElementById('hud'); 
 
   // Retrieve WebGL rendering context
   var gl = getWebGLContext(canvas);
@@ -25,9 +26,14 @@ function main() {
   // Create our input handler
   var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed player into inputhandler
   inputHandler.update();    // Update the movement with every frame
+   
+  // Draw the HUD
+  drawHUD(hud);
 
   // Draw the map
   drawMap(inputHandler);
+
+  
 
   // Add our player onto the map
   scene.addGeometry(player);
@@ -76,6 +82,16 @@ function initializeShaders(gl)
   nonTexturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
   nonTexturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+}
+
+function drawHUD(hud)
+{
+    var ctx = hud.getContext("2d");
+    
+    // Draw the time and date HUDs
+    var date = new Date();
+    ctx.font = "30px Arial";
+    ctx.fillText(date.getMonth() + "/" + date.getDate() , 10, 50);
 }
 
 function drawMap(inputHandler)
@@ -141,6 +157,19 @@ function drawMap(inputHandler)
         var plane = new Plane(texturedShader, image);
         inputHandler.scene.addGeometry(plane);
     });
+}
+
+// Puts text in center of canvas.
+function makeTextCanvas(text, width, height) {
+    textCtx.canvas.width  = width;
+    textCtx.canvas.height = height;
+    textCtx.font = "20px monospace";
+    textCtx.textAlign = "center";
+    textCtx.textBaseline = "middle";
+    textCtx.fillStyle = "black";
+    textCtx.clearRect(0, 0, textCtx.canvas.width, textCtx.canvas.height);
+    textCtx.fillText(text, width / 2, height / 2);
+    return textCtx.canvas;
 }
 
 // ========== END OF FUNCTIONS ========== //
