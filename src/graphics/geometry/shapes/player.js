@@ -72,10 +72,10 @@ class Player extends Geometry {
         var vertex5 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
         var vertex6 = new Vertex( topScalar * torsoW*Math.cos(    i * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin(    i * segConstant)+Tz);
         // set vertice colors
-        vertex1.color = [0.8, 0.0, 0.0, 1.0];
-        vertex2.color = [0.8, 0.0, 0.0, 1.0];
+        vertex1.color = [0.5, 0.0, 0.0, 1.0];
+        vertex2.color = [0.5, 0.0, 0.0, 1.0];
         vertex3.color = [0.8, 0.0, 0.0, 1.0];
-        vertex4.color = [0.8, 0.0, 0.0, 1.0];
+        vertex4.color = [0.5, 0.0, 0.0, 1.0];
         vertex5.color = [0.8, 0.0, 0.0, 1.0];
         vertex6.color = [0.8, 0.0, 0.0, 1.0];
         // push vertices
