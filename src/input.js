@@ -38,33 +38,39 @@ class InputHandler {
 
     update()
     {
-        // Movement left
-        if(_inputHandler.left) 
-        {
-            _inputHandler.camera.truck(-_inputHandler.truckSpeed);
-            _inputHandler.player.faceAngle(-90);
-        }
-        // Movement right
-        if(_inputHandler.right)
-        {
-            _inputHandler.camera.truck(_inputHandler.truckSpeed);
-            _inputHandler.player.faceAngle(90);
-        }
-        // Movement up
-        if(_inputHandler.up)
-        {
-            _inputHandler.camera.dolly(-_inputHandler.dollySpeed);
-            _inputHandler.player.faceAngle(180);
-        }
-        // Movement down
-        if(_inputHandler.down)
-        {
-            _inputHandler.camera.dolly(_inputHandler.dollySpeed);
-            _inputHandler.player.faceAngle(0);
-        }
-        
-        _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
-        requestAnimationFrame(_inputHandler.update);
+      var currAngle = _inputHandler.player.currentAngle;
+      // Movement left
+      if(_inputHandler.left) 
+      {
+          _inputHandler.camera.truck(-_inputHandler.truckSpeed);
+          if(Math.abs(270 - currAngle) > Math.abs(-90 - currAngle)) {_inputHandler.player.faceAngle(-90);}
+          else {_inputHandler.player.faceAngle(270);}
+      }
+      // Movement right
+      if(_inputHandler.right)
+      {
+          _inputHandler.camera.truck(_inputHandler.truckSpeed);
+          if(Math.abs(90 - currAngle) > Math.abs(-270 - currAngle)) {_inputHandler.player.faceAngle(-270);}
+          else {_inputHandler.player.faceAngle(90);}
+      }
+      // Movement up
+      if(_inputHandler.up)
+      {
+          _inputHandler.camera.dolly(-_inputHandler.dollySpeed);
+          if(Math.abs(180 - currAngle) > Math.abs(-180 - currAngle)) {_inputHandler.player.faceAngle(-180);}
+          else {_inputHandler.player.faceAngle(180);}
+      }
+      // Movement down
+      if(_inputHandler.down)
+      {
+          _inputHandler.camera.dolly(_inputHandler.dollySpeed);
+          if(Math.abs(0 - currAngle) > Math.abs(360 - currAngle)) {_inputHandler.player.faceAngle(360);}
+          else if(currAngle < -180) {_inputHandler.player.faceAngle(-360);}
+          else {_inputHandler.player.faceAngle(0);}
+      }
+      
+      _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
+      requestAnimationFrame(_inputHandler.update);
     }
 
     keyDown(ev) {
