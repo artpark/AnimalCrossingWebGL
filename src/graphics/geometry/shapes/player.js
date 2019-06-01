@@ -13,7 +13,8 @@ class Player extends Geometry {
    * @param {Shader} shader Shading object used to shade geometry
    * @returns {Square} Square created
    */
-  constructor(shader) {
+  constructor(shader)
+  {
         super(shader);
         
         this.Tx = 0;
@@ -50,156 +51,42 @@ class Player extends Geometry {
     }
     this.currentAngle = ((this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle) % 360);
     this.rotationMatrix.setRotate(this.currentAngle, 0, 1, 0);
-    console.log(this.currentAngle);
+    //console.log(this.currentAngle);
   }
 
-  generatePlayerVertices(Tx, Ty, Tz) {
-      /*Tx -= 15.5;
-      Ty -=  0.5;
-      Tz -= 15.5;*/
-
+  generatePlayerVertices(Tx, Ty, Tz)
+  {
       var vertices = []
-      // face 1
-      var vertex1  = new Vertex(-0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex2  = new Vertex( 0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex3  = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
-      var vertex4  = new Vertex(-0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex5  = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
-      var vertex6  = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
-      
-      /*vertex1.texCoord = [0.0, 0.0];
-      vertex2.texCoord = [1.0, 0.0];
-      vertex3.texCoord = [1.0, 1.0];
-      vertex4.texCoord = [0.0, 0.0];
-      vertex5.texCoord = [1.0, 1.0];
-      vertex6.texCoord = [0.0, 1.0];*/
-      // face 2
-      var vertex7  = new Vertex( 0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex8  = new Vertex( 0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex9  = new Vertex( 0.50+Tx,  0.50+Ty, -0.50+Tz);
-      var vertex10 = new Vertex( 0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex11 = new Vertex( 0.50+Tx,  0.50+Ty, -0.50+Tz);
-      var vertex12 = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
-      /*vertex7.texCoord = [0.0, 0.0];
-      vertex8.texCoord = [1.0, 0.0];
-      vertex9.texCoord = [1.0, 1.0];
-      vertex10.texCoord = [0.0, 0.0];
-      vertex11.texCoord = [1.0, 1.0];
-      vertex12.texCoord = [0.0, 1.0];*/
-      // face 3
-      var vertex13 = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
-      var vertex14 = new Vertex( 0.50+Tx,  0.50+Ty, -0.50+Tz);
-      var vertex15 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
-      var vertex16 = new Vertex( 0.50+Tx,  0.50+Ty,  0.50+Tz);
-      var vertex17 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
-      var vertex18 = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
-      vertex13.color = [0.0, 1.0, 0.0, 1.0]
-      vertex14.color = [0.0, 1.0, 0.0, 1.0]
-      vertex15.color = [0.0, 1.0, 0.0, 1.0]
-      /*vertex13.texCoord = [0.0, 0.0];
-      vertex14.texCoord = [1.0, 0.0];
-      vertex15.texCoord = [1.0, 1.0];
-      vertex16.texCoord = [0.0, 0.0];
-      vertex17.texCoord = [1.0, 1.0];
-      vertex18.texCoord = [0.0, 1.0];*/
-      // face 4
-      var vertex19 = new Vertex( 0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex20 = new Vertex( 0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex21 = new Vertex(-0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex22 = new Vertex( 0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex23 = new Vertex(-0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex24 = new Vertex(-0.50+Tx, -0.50+Ty,  0.50+Tz);
-      /*vertex19.texCoord = [0.0, 0.0];
-      vertex20.texCoord = [1.0, 0.0];
-      vertex21.texCoord = [1.0, 1.0];
-      vertex22.texCoord = [0.0, 0.0];
-      vertex23.texCoord = [1.0, 1.0];
-      vertex24.texCoord = [0.0, 1.0];*/
-      // face 5
-      var vertex25 = new Vertex( 0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex26 = new Vertex(-0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex27 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
-      var vertex28 = new Vertex( 0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex29 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
-      var vertex30 = new Vertex( 0.50+Tx,  0.50+Ty, -0.50+Tz);
-      vertex25.color = [0.0, 1.0, 0.0, 1.0];
-      vertex26.color = [0.0, 1.0, 0.0, 1.0];
-      vertex27.color = [0.0, 1.0, 0.0, 1.0];
-      vertex28.color = [0.0, 1.0, 0.0, 1.0];
-      vertex29.color = [0.0, 1.0, 0.0, 1.0];
-      vertex30.color = [0.0, 1.0, 0.0, 1.0];
-      /*vertex25.texCoord = [0.0, 0.0];
-      vertex26.texCoord = [1.0, 0.0];
-      vertex27.texCoord = [1.0, 1.0];
-      vertex28.texCoord = [0.0, 0.0];
-      vertex29.texCoord = [1.0, 1.0];
-      vertex30.texCoord = [0.0, 1.0];*/
-      // face 6
-      var vertex31 = new Vertex(-0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex32 = new Vertex(-0.50+Tx, -0.50+Ty,  0.50+Tz);
-      var vertex33 = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
-      var vertex34 = new Vertex(-0.50+Tx, -0.50+Ty, -0.50+Tz);
-      var vertex35 = new Vertex(-0.50+Tx,  0.50+Ty,  0.50+Tz);
-      var vertex36 = new Vertex(-0.50+Tx,  0.50+Ty, -0.50+Tz);
-      
-      /*vertex31.texCoord = [0.0, 0.0];
-      vertex32.texCoord = [1.0, 0.0];
-      vertex33.texCoord = [1.0, 1.0];
-      vertex34.texCoord = [0.0, 0.0];
-      vertex35.texCoord = [1.0, 1.0];
-      vertex36.texCoord = [0.0, 1.0];*/
+      var segConstant = Math.PI / 3;  // for vertice generation calculations
+      var torsoW = 0.3;               // scalar for torso width
+      var torsoH = 0.6;               // scalar for torso height
+      var topScalar = 0.7;
 
-      vertices.push(vertex1);
-      vertices.push(vertex2);
-      vertices.push(vertex3);
-      vertices.push(vertex4);
-      vertices.push(vertex5);
-      vertices.push(vertex6);
-      vertices.push(vertex7);
-      vertices.push(vertex8);
-      vertices.push(vertex9);
-      vertices.push(vertex10);
-      vertices.push(vertex11);
-      vertices.push(vertex12);
-      vertices.push(vertex13);
-      vertices.push(vertex14);
-      vertices.push(vertex15);
-      vertices.push(vertex16);
-      vertices.push(vertex17);
-      vertices.push(vertex18);
-      vertices.push(vertex19);
-      vertices.push(vertex20);
-      vertices.push(vertex21);
-      vertices.push(vertex22);
-      vertices.push(vertex23);
-      vertices.push(vertex24);
-      vertices.push(vertex25);
-      vertices.push(vertex26);
-      vertices.push(vertex27);
-      vertices.push(vertex28);
-      vertices.push(vertex29);
-      vertices.push(vertex30);
-      vertices.push(vertex31);
-      vertices.push(vertex32);
-      vertices.push(vertex33);
-      vertices.push(vertex34);
-      vertices.push(vertex35);
-      vertices.push(vertex36);
+      // generate torso vertices
+      for (var i = 0; i < 6; i++) {
+        // create vertices
+        var vertex1 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0, torsoW * Math.sin(    i * segConstant)+Tz);
+        var vertex2 = new Vertex(             torsoW*Math.cos((i+1) * segConstant)+Tx,      0, torsoW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex3 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex4 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0, torsoW * Math.sin(    i * segConstant)+Tz);
+        var vertex5 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex6 = new Vertex( topScalar * torsoW*Math.cos(    i * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin(    i * segConstant)+Tz);
+        // set vertice colors
+        vertex1.color = [0.8, 0.0, 0.0, 1.0];
+        vertex2.color = [0.8, 0.0, 0.0, 1.0];
+        vertex3.color = [0.8, 0.0, 0.0, 1.0];
+        vertex4.color = [0.8, 0.0, 0.0, 1.0];
+        vertex5.color = [0.8, 0.0, 0.0, 1.0];
+        vertex6.color = [0.8, 0.0, 0.0, 1.0];
+        // push vertices
+        vertices.push(vertex1);
+        vertices.push(vertex2);
+        vertices.push(vertex3);
+        vertices.push(vertex4);
+        vertices.push(vertex5);
+        vertices.push(vertex6);
+      }
 
       return vertices;
-  }
-
-  moveHor(dir) {
-      console.log("hor "+dir);
-      
-  }
-
-  moveVer(dir) {
-      console.log("ver "+dir);
-      this.Tz += dir;
-  }
-
-  updatePos() {
-
   }
 }
