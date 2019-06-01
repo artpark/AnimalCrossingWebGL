@@ -116,13 +116,13 @@ function drawDateTimeHUD(hud, hudText)
     ctxText.font = "25px Arial";
     ctxText.fillStyle = "#421F0F";
     
-    if (date.getMonth() < 10)   // MONTH
+    if (date.getMonth() + 1 < 10)   // MONTH
     {
-        ctxText.fillText("0" + date.getMonth(), 35, hudText.height - imgHeight + 20);
+        ctxText.fillText("0" + (date.getMonth() + 1), 35, hudText.height - imgHeight + 20);
     }
     else
     {
-        ctxText.fillText(date.getMonth(), 35, hudText.height - imgHeight + 20);
+        ctxText.fillText(date.getMonth() + 1, 35, hudText.height - imgHeight + 20);
     }
 
     ctxText.fillText("/", 70, hudText.height - imgHeight + 23); // SLASH
