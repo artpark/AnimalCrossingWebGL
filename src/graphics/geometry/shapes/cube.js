@@ -20,6 +20,10 @@ class Cube extends Geometry {
 
       this.image = image;
 
+      //AABB vs AABB
+      this.centerPoint = new Vector3([Tx, Ty, Tz]);
+      this.halfWidth = new Vector3([0.5, 0.5, 0.5]);
+
       //this.translationMatrix = new Matrix4();
       //this.translationMatrix.translate(Tx, Ty, Tz);
 
@@ -28,10 +32,6 @@ class Cube extends Geometry {
   }
 
   generateCubeVertices(Tx, Ty, Tz) {
-      Tx -= 15.5;
-      Ty -=  0.5;
-      Tz -= 15.5;
-
       var vertices = []
       // face 1
       var vertex1  = new Vertex(-0.50+Tx, -0.50+Ty,  0.50+Tz);

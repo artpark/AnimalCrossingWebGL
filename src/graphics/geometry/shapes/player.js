@@ -29,14 +29,21 @@ class Player extends Geometry {
         this.lerpConstant = 0.04;
         this.rotationMatrix = new Matrix4();
 
+        //AABB vs AABB
+        var processedPosition = this.modelMatrix.multiplyVector3(new Vector3([this.Tx, this.Ty, this.Tz]));
+        this.centerPoint = new Vector3([processedPosition.elements[0], processedPosition.elements[1], processedPosition.elements[2]]);
+        this.halfWidth = new Vector3([0.4,0.4,0.6]);
+
         // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
         this.interleaveVertices();
   }
 
   render()
   {
-      this.modelMatrix.multiply(this.rotationMatrix);
-      super.render();
+    var processedPosition = this.modelMatrix.multiplyVector3(new Vector3([this.Tx, this.Ty, this.Tz]));
+    this.centerPoint = new Vector3([processedPosition.elements[0], processedPosition.elements[1], processedPosition.elements[2]]);
+    this.modelMatrix.multiply(this.rotationMatrix);
+    super.render();
   }
 
   faceAngle(turnToAngle)

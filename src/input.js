@@ -34,11 +34,45 @@ class InputHandler {
         // Keyboard Events
         document.addEventListener('keydown', function(ev) { _inputHandler.keyDown(ev); }, false);
         document.addEventListener('keyup',   function(ev) { _inputHandler.keyUp(ev);   }, false);
-
     }
 
     update()
     {
+      var geometriesArr = _inputHandler.scene.geometries;
+      for(var geoI = 0; geoI < geometriesArr.length; geoI++)
+      {
+        if(geometriesArr[geoI] == _inputHandler.player)
+        {
+          continue;
+        }
+        else
+        {
+          if(_inputHandler.testAABBAABB(_inputHandler.player, geometriesArr[geoI]))
+          {
+            console.log("Collided");
+            // Check which way the player can still move //
+            // Store original center point
+            var originalCenter = _inputHandler.player.centerPoint;
+
+            //Up
+            _inputHandler.player.centerPoint = new Vector3([originalCenter.elements[0], originalCenter.elements[1], originalCenter.elements[2] + _inputHandler.dollySpeed * 2]);
+            if(_inputHandler.testAABBAABB(_inputHandler.player, geometriesArr[geoI])) {_inputHandler.up = false;}
+            //Down
+            _inputHandler.player.centerPoint = new Vector3([originalCenter.elements[0], originalCenter.elements[1], originalCenter.elements[2] - _inputHandler.dollySpeed * 2]);
+            if(_inputHandler.testAABBAABB(_inputHandler.player, geometriesArr[geoI])) {_inputHandler.down = false;}
+            //Left
+            _inputHandler.player.centerPoint = new Vector3([originalCenter.elements[0] + _inputHandler.truckSpeed * 2, originalCenter.elements[1], originalCenter.elements[2]]);
+            if(_inputHandler.testAABBAABB(_inputHandler.player, geometriesArr[geoI])) {_inputHandler.left = false;}
+            //Right
+            _inputHandler.player.centerPoint = new Vector3([originalCenter.elements[0] - _inputHandler.truckSpeed * 2, originalCenter.elements[1], originalCenter.elements[2]]);
+            if(_inputHandler.testAABBAABB(_inputHandler.player, geometriesArr[geoI])) {_inputHandler.right = false;}
+
+            // Reset player's center point
+            _inputHandler.player.centerPoint = originalCenter;
+          }
+        }
+      }
+
       var currAngle = _inputHandler.player.currentAngle;
       // Movement left + up
       if (_inputHandler.left && _inputHandler.up)
@@ -103,7 +137,26 @@ class InputHandler {
       }
 
       _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
+
+      //AABB vs AABB, updating player's position
+
       requestAnimationFrame(_inputHandler.update);
+    }
+
+    testAABBAABB(geometryA, geometryB)
+    {
+      if (geometryA.centerPoint == null || geometryA.halfWidth == null || geometryB.centerPoint == null || geometryB.halfWidth == null) {return false;}
+      if (Math.abs(geometryA.centerPoint.elements[0] - geometryB.centerPoint.elements[0]) > (geometryA.halfWidth.elements[0] + geometryB.halfWidth.elements[0]) ) {return false;}
+      if (Math.abs(geometryA.centerPoint.elements[1] - geometryB.centerPoint.elements[1]) > (geometryA.halfWidth.elements[1] + geometryB.halfWidth.elements[1]) ) {return false;}
+      if (Math.abs(geometryA.centerPoint.elements[2] - geometryB.centerPoint.elements[2]) > (geometryA.halfWidth.elements[2] + geometryB.halfWidth.elements[2]) ) {return false;}
+  
+      // We have an overlap
+      return true;
+    }
+
+    absVector3(vector)
+    {
+      return (new Vector3([Math.abs(vector.elements[0]), Math.abs(vector.elements[1]), Math.abs(vector.elements[2])]));
     }
 
     keyDown(ev) {

@@ -17,6 +17,10 @@ class Geometry {
     this.shader = shader;
 
     this.modelMatrix = new Matrix4();
+
+    //AABB vs AABB
+    this.centerPoint = null;
+    this.halfWidth = null;
   }
 
   /**
