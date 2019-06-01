@@ -14,18 +14,28 @@ class Camera {
     constructor(shader) {
         this.speed = 0.1;
 
+        // Camera zooming and interpolation
+        this.zoom = 70;
+        this.zoomLerpConstant = 0.01;
+        this.eyeYLerpConstant = 0.01;
+
         // Camera view attributes
         this.eye     = new Vector3([0, 3, -3]);
-        this.center  = new Vector3([0, 0,0]);
-        this.up      = new Vector3([0, 1, 0]);
-
-        this.zoom = 70;
-        //this.perspective = true;
+        this.center  = new Vector3([0, 0,  0]);
+        this.up      = new Vector3([0, 1,  0]);
 
         this.viewMatrix = new Matrix4();
         this.updateView();
 
         this.projectionMatrix = new Matrix4();
+        this.projectionMatrix.setPerspective(this.zoom, canvas.width/canvas.height, 1, 100);
+    }
+
+    lerpZoom(fov, eyeY)
+    {
+        this.zoom = ((this.zoomLerpConstant) * (fov) + (1 - this.zoomLerpConstant) * (this.zoom));
+        this.eye.elements[1] = ((this.eyeYLerpConstant) * (eyeY) + (1 - this.eyeYLerpConstant) * (this.eye.elements[1]));
+        this.updateView();
         this.projectionMatrix.setPerspective(this.zoom, canvas.width/canvas.height, 1, 100);
     }
 

@@ -17,33 +17,6 @@
 
     <img id="dateTimeHud" width="0" height="0" src="/ui/datetimeui.png">
 
-    <!--FPS counter, pulled from a Stack Overflow thread-->
-    <script>
-        var elapsedTime = 0;
-        var frameCount = 0;
-        var lastTime = 0;
-
-        function drawScene() {
-            var now = new Date().getTime();
-
-            frameCount++;
-            elapsedTime += (now - lastTime);
-
-            lastTime = now;
-
-            if(elapsedTime >= 1000) {
-               fps = frameCount;
-               frameCount = 0;
-               elapsedTime -= 1000;
-
-               document.getElementById('fps').innerHTML = fps+" fps";
-            }
-        }
-
-        lastTime = new Date().getTime();
-        setInterval(drawScene,33);
-    </script>
-
     <br>FPS:<div id="fps">--</div>
     <!--ZOOM (SCROLL WHEEL):<div id="zoomDegree">0</div>
     VIEW MODE (Z):<div id="viewMode">Perspective</div>-->
@@ -78,6 +51,7 @@
     <script src = "src/graphics/geometry/shapes/skybox.js"></script>
     <script src = "src/graphics/geometry/shapes/custom.js"></script>
     <script src = "src/graphics/geometry/shapes/player.js"></script>
+    <script src = "src/graphics/geometry/shapes/villager.js"></script>
     <script src = "src/graphics/renderer.js"></script>
     <script src = "src/graphics/scene.js"></script>
     <script src = "src/graphics/camera.js"></script>

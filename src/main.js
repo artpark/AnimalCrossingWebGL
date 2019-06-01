@@ -271,7 +271,39 @@ function drawDateTimeHUD(hud, hudText)
 
 function drawMap(inputHandler)
 {
-    // inputHandler.readTexture("objs/cobble.jpg", function(image) {
+    var testCube = new Cube(nonTexturedShader, null, 0, 0, 5);
+    inputHandler.scene.addGeometry(testCube);
+
+    // Load grass texture and add ground plane to scene with that texture.
+    inputHandler.readTexture("objs/acgrass.png", function(image) {
+        var plane = new Plane(texturedShader, image);
+        inputHandler.scene.addGeometry(plane);
+    });
+
+    // load player shirt texture, apply it to a Player object, and
+    // replace inputHandler's Player with the new textured object
+    inputHandler.readTexture("objs/playerface.png", function(image) {
+        //var headTex = inputHandler.readTexture("objs/playerface.png");
+        inputHandler.player = new Player(texturedShader, image);
+        inputHandler.scene.addGeometry(inputHandler.player);
+    });
+
+    drawVillagers(inputHandler);
+}
+
+function drawVillagers(inputHandler)
+{
+    inputHandler.readTexture("objs/playerface.png", function(image) {
+        //var headTex = inputHandler.readTexture("objs/playerface.png");
+        var lucky = new Villager(texturedShader, image, 5, 0, 5);
+        inputHandler.scene.addGeometry(lucky);
+    });
+}
+
+// ========== END OF FUNCTIONS ========== //
+
+
+// inputHandler.readTexture("objs/cobble.jpg", function(image) {
     //     //var startCube = new Cube(texturedShader, image, 0, 0, 0);
     //     //scene.addGeometry(startCube);
   
@@ -326,23 +358,3 @@ function drawMap(inputHandler)
     //         }
     //     }
     // });
-
-    var testCube = new Cube(nonTexturedShader, null, 0, 0, 5);
-    inputHandler.scene.addGeometry(testCube);
-
-    // Load grass texture and add ground plane to scene with that texture.
-    inputHandler.readTexture("objs/acgrass.png", function(image) {
-        var plane = new Plane(texturedShader, image);
-        inputHandler.scene.addGeometry(plane);
-    });
-
-    // load player shirt texture, apply it to a Player object, and
-    // replace inputHandler's Player with the new textured object
-    inputHandler.readTexture("objs/playerface.png", function(image) {
-        //var headTex = inputHandler.readTexture("objs/playerface.png");
-        inputHandler.player = new Player(texturedShader, image);
-        inputHandler.scene.addGeometry(inputHandler.player);
-    });
-}
-
-// ========== END OF FUNCTIONS ========== //
