@@ -27,8 +27,10 @@ function main() {
   var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed player into inputhandler
   inputHandler.update();    // Update the movement with every frame
    
-  // Draw the HUD
-  drawHUD(hud, hudText);
+  // Draw the HUD continuously
+  var ctx = hud.getContext("2d");
+  var ctxText = hudText.getContext("2d");
+  updateHUD(ctx, ctxText);
 
   // Draw the map
   drawMap(inputHandler);
@@ -84,36 +86,26 @@ function initializeShaders(gl)
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
 }
 
-function drawHUD(hud, hudText)
+function updateHUD(ctx, ctxText)
+{
+    ctx.clearRect(0, 0, 800, 600);
+    ctxText.clearRect(0, 0, 800, 600);
+
+    drawDateTimeHUD(ctx, ctxText);
+    requestAnimationFrame(function() {
+        updateHUD(ctx, ctxText);
+    });
+}
+
+function drawDateTimeHUD(ctx, ctxText)
 {
     var imgWidth = 192.2;
     var imgHeight = 116.4;
 
-    // let f = new FontFace('FinkHeavy', 'url(fonts/FinkHeavy.ttf)');
-
-    // f.load().then(function() {
-    // // Ready to use the font in a canvas context
-    // });
-
-    // var newFont = document.createElement('style');
-    // newFont.appendChild(document.createTextNode("\
-    // @font-face {\
-    //     font-family: FinkHeavy;\
-    //     src: url('fonts/FinkHeavy.ttf')\
-    // }\
-    // "));
-
-    //document.head.appendChild(newFont);
-    
-    var ctx = hud.getContext("2d");
-    var ctxText = hudText.getContext("2d");
-
     // Draw the hud element image
     var img = new Image();
-    img.onload = function () {
-      ctx.drawImage(img, 15, hud.height - imgHeight - 15, imgWidth, imgHeight);
-    };
     img.src = "ui/datetimeui.png";
+    ctx.drawImage(img, 15, hud.height - imgHeight - 15, imgWidth, imgHeight);
 
     // Draw the date text
     var date = new Date();
