@@ -29,6 +29,7 @@ class InputHandler {
         // Movement constants
         this.truckSpeed = 0.3;
         this.dollySpeed = 0.3;
+        this.diagScalar = 0.7;
 
         // Keyboard Events
         document.addEventListener('keydown', function(ev) { _inputHandler.keyDown(ev); }, false);
@@ -39,36 +40,68 @@ class InputHandler {
     update()
     {
       var currAngle = _inputHandler.player.currentAngle;
+      // Movement left + up
+      if (_inputHandler.left && _inputHandler.up)
+      {
+         _inputHandler.camera.truck(-_inputHandler.truckSpeed * _inputHandler.diagScalar);
+         _inputHandler.camera.dolly(-_inputHandler.dollySpeed * _inputHandler.diagScalar);
+         if(Math.abs(225 - currAngle) > Math.abs(-135 - currAngle)) {_inputHandler.player.faceAngle(-135);}
+         else {_inputHandler.player.faceAngle(225);}
+      }
+      // Movement right + up
+      else if (_inputHandler.right && _inputHandler.up)
+      {
+         _inputHandler.camera.truck( _inputHandler.truckSpeed * _inputHandler.diagScalar);
+         _inputHandler.camera.dolly(-_inputHandler.dollySpeed * _inputHandler.diagScalar);
+         if(Math.abs(135 - currAngle) > Math.abs(-255 - currAngle)) {_inputHandler.player.faceAngle(-255);}
+         else {_inputHandler.player.faceAngle(135);}
+      }
+      // Movement right + down
+      else if (_inputHandler.right && _inputHandler.down)
+      {
+         _inputHandler.camera.truck( _inputHandler.truckSpeed * _inputHandler.diagScalar);
+         _inputHandler.camera.dolly( _inputHandler.dollySpeed * _inputHandler.diagScalar);
+         if(Math.abs(45 - currAngle) > Math.abs(-315 - currAngle)) {_inputHandler.player.faceAngle(-315);}
+         else {_inputHandler.player.faceAngle(45);}
+      }
+      // Movement left + down
+      else if (_inputHandler.left && _inputHandler.down)
+      {
+         _inputHandler.camera.truck(-_inputHandler.truckSpeed * _inputHandler.diagScalar);
+         _inputHandler.camera.dolly( _inputHandler.dollySpeed * _inputHandler.diagScalar);
+         if(Math.abs(315 - currAngle) > Math.abs(-45 - currAngle)) {_inputHandler.player.faceAngle(-45);}
+         else {_inputHandler.player.faceAngle(315);}
+      }
       // Movement left
-      if(_inputHandler.left) 
+      else if(_inputHandler.left) 
       {
           _inputHandler.camera.truck(-_inputHandler.truckSpeed);
           if(Math.abs(270 - currAngle) > Math.abs(-90 - currAngle)) {_inputHandler.player.faceAngle(-90);}
           else {_inputHandler.player.faceAngle(270);}
       }
       // Movement right
-      if(_inputHandler.right)
+      else if(_inputHandler.right)
       {
           _inputHandler.camera.truck(_inputHandler.truckSpeed);
           if(Math.abs(90 - currAngle) > Math.abs(-270 - currAngle)) {_inputHandler.player.faceAngle(-270);}
           else {_inputHandler.player.faceAngle(90);}
       }
       // Movement up
-      if(_inputHandler.up)
+      else if(_inputHandler.up)
       {
           _inputHandler.camera.dolly(-_inputHandler.dollySpeed);
           if(Math.abs(180 - currAngle) > Math.abs(-180 - currAngle)) {_inputHandler.player.faceAngle(-180);}
           else {_inputHandler.player.faceAngle(180);}
       }
       // Movement down
-      if(_inputHandler.down)
+      else if(_inputHandler.down)
       {
           _inputHandler.camera.dolly(_inputHandler.dollySpeed);
           if(Math.abs(0 - currAngle) > Math.abs(360 - currAngle)) {_inputHandler.player.faceAngle(360);}
           else if(currAngle < -180) {_inputHandler.player.faceAngle(-360);}
           else {_inputHandler.player.faceAngle(0);}
       }
-      
+
       _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
       requestAnimationFrame(_inputHandler.update);
     }
