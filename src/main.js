@@ -88,6 +88,13 @@ function drawHUD(hud)
 {
     var ctx = hud.getContext("2d");
     
+    // Draw the hud element image
+    var img = new Image();
+    img.onload = function () {
+      ctx.drawImage(img, 10, 10, 192.2, 116.4);
+    };
+    img.src = "ui/datetimeui.png";
+
     // Draw the time and date HUDs
     var date = new Date();
     ctx.font = "30px Arial";
