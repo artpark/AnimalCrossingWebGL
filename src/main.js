@@ -352,9 +352,9 @@ function drawVillagers(inputHandler)
 
 function drawTrees(inputHandler)
 {
-    inputHandler.readTexture("objs/treetexture.png", function(image) {
+    inputHandler.readTexture("objs/treetexture4.png", function(image) {
         //var headTex = inputHandler.readTexture("objs/playerface.png");
-        var lucky = new Tree(texturedShader, image, 3, 0, 5);
-        inputHandler.scene.addGeometry(lucky);
+        var tree = new Tree(texturedShader, image, 3, 0, 5);
+        inputHandler.scene.addGeometry(tree);
     });
 }

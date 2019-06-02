@@ -50,12 +50,12 @@ class Tree extends Geometry {
         var vertex5 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
         var vertex6 = new Vertex( topScalar * torsoW*Math.cos(    i * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin(    i * segConstant)+Tz);
         // set texture coordinates
-        vertex1.texCoord = [0.0, 0.1];
-        vertex2.texCoord = [0.1, 0.1];
-        vertex3.texCoord = [0.1, 0.1];
-        vertex4.texCoord = [0.0, 0.1];
-        vertex5.texCoord = [0.1, 0.1];
-        vertex6.texCoord = [0.0, 0.1];
+        vertex1.texCoord = [0.1, 0.0];
+        vertex2.texCoord = [1.0, 0.0];
+        vertex3.texCoord = [1.0, 0.5];
+        vertex4.texCoord = [0.1, 0.0];
+        vertex5.texCoord = [1.0, 0.5];
+        vertex6.texCoord = [0.1, 0.5];
         // push vertices
         vertices.push(vertex1);
         vertices.push(vertex2);
@@ -74,8 +74,8 @@ class Tree extends Geometry {
         var vertex9 = new Vertex(                                          Tx, torsoH+0.6,                                           Tz);
         // set texture coordinates
         vertex7.texCoord = [0.0, 0.5];
-        vertex8.texCoord = [0.1, 1.0];
-        vertex9.texCoord = [1.0, 1.0];
+        vertex8.texCoord = [1.0, 0.5];
+        vertex9.texCoord = [0.5, 1.0];
 
         
         // push vertices
@@ -98,8 +98,8 @@ class Tree extends Geometry {
         var vertex9 = new Vertex(                                      Tx, torsoH+0.9,                                       Tz);
         // set texture coordinates
         vertex7.texCoord = [0.0, 0.5];
-        vertex8.texCoord = [0.5, 1.0];
-        vertex9.texCoord = [1.0, 1.0];
+        vertex8.texCoord = [1.0, 0.5];
+        vertex9.texCoord = [0.5, 1.0];
 
         // push vertices
         vertices.push(vertex1);
@@ -122,8 +122,8 @@ class Tree extends Geometry {
         // set texture coordinates
          // set texture coordinates
         vertex7.texCoord = [0.0, 0.5];
-        vertex8.texCoord = [0.5, 1.0];
-        vertex9.texCoord = [1.0, 1.0];
+        vertex8.texCoord = [1.0, 0.5];
+        vertex9.texCoord = [0.5, 1.0];
         // push vertices
         vertices.push(vertex1);
         vertices.push(vertex2);
