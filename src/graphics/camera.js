@@ -16,8 +16,8 @@ class Camera {
 
         // Camera zooming and interpolation
         this.zoom = 70;
-        this.zoomLerpConstant = 0.01;
-        this.eyeYLerpConstant = 0.01;
+        this.zoomLerpConstant = 0.015;
+        this.eyeYLerpConstant = 0.015;
 
         // Camera view attributes
         this.eye     = new Vector3([0, 3, -3]);
