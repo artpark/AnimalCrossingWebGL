@@ -282,7 +282,7 @@ function drawMap(inputHandler)
 
     // load player shirt texture, apply it to a Player object, and
     // replace inputHandler's Player with the new textured object
-    inputHandler.readTexture("objs/playerface.png", function(image) {
+    inputHandler.readTexture("objs/playertexture3.png", function(image) {
         //var headTex = inputHandler.readTexture("objs/playerface.png");
         inputHandler.player = new Player(texturedShader, image);
         inputHandler.scene.addGeometry(inputHandler.player);
@@ -293,7 +293,7 @@ function drawMap(inputHandler)
 
 function drawVillagers(inputHandler)
 {
-    inputHandler.readTexture("objs/playerface.png", function(image) {
+    inputHandler.readTexture("objs/playertexture3.png", function(image) {
         //var headTex = inputHandler.readTexture("objs/playerface.png");
         var lucky = new Villager(texturedShader, image, 5, 0, 5);
         inputHandler.scene.addGeometry(lucky);

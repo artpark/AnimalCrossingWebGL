@@ -124,7 +124,7 @@ class Player extends Geometry {
 
         var vertex7 = new Vertex(  headW*Math.cos((i+1) * segConstant)+Tx, headH + torsoH, headW * Math.sin((i+1) * segConstant)+Tz);
         var vertex8 = new Vertex(  headW*Math.cos(    i * segConstant)+Tx, headH + torsoH, headW * Math.sin(    i * segConstant)+Tz);
-        var vertex9 = new Vertex(                                       0, headH + torsoH+0.25,                                        0);
+        var vertex9 = new Vertex(                                      Tx, headH + torsoH+0.22,                                  Tz);
         // set texture coordinates
         
         if (i == 4) // front face
