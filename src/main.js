@@ -316,9 +316,6 @@ function drawChatHUD(inputHandler, hud, hudText)
 
 function drawMap(inputHandler)
 {
-    var testCube = new Cube(nonTexturedShader, null, 0, 0, 5);
-    inputHandler.scene.addGeometry(testCube);
-
     // Load grass texture and add ground plane to scene with that texture.
     inputHandler.readTexture("objs/acgrass.png", function(image) {
         var plane = new Plane(texturedShader, image);
@@ -334,7 +331,16 @@ function drawMap(inputHandler)
     });
 
     drawVillagers(inputHandler);
-    drawTrees(inputHandler);
+    for(var z = -16; z < 16; z++)
+    {
+        for(var x = -16; x < 16; x++)
+        {
+            if(Math.random() < 0.02) //2% chance
+            {
+                drawTree(inputHandler, x, z);
+            }
+        }
+    }
 }
 
 function drawVillagers(inputHandler)
@@ -350,11 +356,11 @@ function drawVillagers(inputHandler)
     });
 }
 
-function drawTrees(inputHandler)
+function drawTree(inputHandler, x, z)
 {
     inputHandler.readTexture("objs/treetexture4.png", function(image) {
         //var headTex = inputHandler.readTexture("objs/playerface.png");
-        var tree = new Tree(texturedShader, image, 3, 0, 5);
+        var tree = new Tree(texturedShader, image, x, 0, z);
         inputHandler.scene.addGeometry(tree);
         tree = new Tree(texturedShader, image, 4.5, 0, 3);
         inputHandler.scene.addGeometry(tree);

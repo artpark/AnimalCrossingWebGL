@@ -35,7 +35,7 @@ class DialogueGenerator {
             "Can I help you, James Davis?",
             "Can I do something else for you, \nJames Davis, [catchphrase]?",
             "What can I do for you, \nJames Davis, [catchphrase]?", 
-            "What, you again, James Davis? \nHow many times has it BEEN today, [catchphrase]?"
+            "What, you again, James Davis? \nHow many times has it BEEN \ntoday, [catchphrase]?"
         ]; 
 
         this.greetings = [
