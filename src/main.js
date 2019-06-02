@@ -33,7 +33,9 @@ function main() {
   // Draw the map
   drawMap(inputHandler);
 
-  
+  // Initialize audio controller
+  var audioController = new AudioController();
+  audioController.playTimeMusic();
 
   // Add our player onto the map
   //scene.addGeometry(player);
