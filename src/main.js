@@ -289,6 +289,7 @@ function drawMap(inputHandler)
     });
 
     drawVillagers(inputHandler);
+    drawTrees(inputHandler);
 }
 
 function drawVillagers(inputHandler)
@@ -296,6 +297,15 @@ function drawVillagers(inputHandler)
     inputHandler.readTexture("objs/playertexture3.png", function(image) {
         //var headTex = inputHandler.readTexture("objs/playerface.png");
         var lucky = new Villager(texturedShader, image, 5, 0, 5);
+        inputHandler.scene.addGeometry(lucky);
+    });
+}
+
+function drawTrees(inputHandler)
+{
+    inputHandler.readTexture("objs/treetexture2.png", function(image) {
+        //var headTex = inputHandler.readTexture("objs/playerface.png");
+        var lucky = new Tree(texturedShader, image, 3, 0, 5);
         inputHandler.scene.addGeometry(lucky);
     });
 }

@@ -33,12 +33,12 @@ class Villager extends Geometry {
     {
         var vertices = []
       var segConstant = Math.PI / 3;  // for vertice generation calculations
-      var torsoW =    0.3;            // scalar for torso width
+      var torsoW =    0.2;            // scalar for torso width
       var torsoH =    0.6;            // scalar for torso height
       var topScalar = 0.7;            // scalar for torso cone shape
 
-      var headW = 0.4;
-      var headH = 0.5;
+      var headW = 0.3;
+      var headH = 0.4;
 
       // generate torso vertices
       for (var i = 0; i < 6; i++)
@@ -92,7 +92,7 @@ class Villager extends Geometry {
 
         var vertex7 = new Vertex(  headW*Math.cos((i+1) * segConstant)+Tx, headH + torsoH, headW * Math.sin((i+1) * segConstant)+Tz);
         var vertex8 = new Vertex(  headW*Math.cos(    i * segConstant)+Tx, headH + torsoH, headW * Math.sin(    i * segConstant)+Tz);
-        var vertex9 = new Vertex(                                      Tx, headH + torsoH+0.22,                                  Tz);
+        var vertex9 = new Vertex(                                      Tx, headH + torsoH+0.15,                                  Tz);
         // set texture coordinates
         
         if (i == 4) // front face
