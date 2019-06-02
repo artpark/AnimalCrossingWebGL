@@ -41,15 +41,11 @@ class InputHandler {
       var geometriesArr = _inputHandler.scene.geometries;
       for(var geoI = 0; geoI < geometriesArr.length; geoI++)
       {
-        if(geometriesArr[geoI] == _inputHandler.player)
-        {
-          continue;
-        }
+        if(geometriesArr[geoI] == _inputHandler.player) {continue;}
         else
         {
           if(_inputHandler.testAABBAABB(_inputHandler.player, geometriesArr[geoI]))
           {
-            console.log("Collided");
             // Check which way the player can still move //
             // Store original center point
             var originalCenter = _inputHandler.player.centerPoint;
@@ -69,6 +65,18 @@ class InputHandler {
 
             // Reset player's center point
             _inputHandler.player.centerPoint = originalCenter;
+
+            // Check to see if the player has collided with a villager
+            if(geometriesArr[geoI] instanceof Villager)
+            {
+              //If so, initiate dialogue and camera zoom
+              _inputHandler.camera.lerpZoom(20, -0.5);
+            }
+          }
+          else
+          {
+            //If not colliding, then return camera back to original zoom
+            _inputHandler.camera.lerpZoom(70, 3);
           }
         }
       }
