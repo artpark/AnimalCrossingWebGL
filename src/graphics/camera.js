@@ -16,11 +16,14 @@ class Camera {
 
         // Camera zooming and interpolation
         this.zoom = 70;
-        this.zoomLerpConstant = 0.015;
-        this.eyeYLerpConstant = 0.015;
+        this.zoomLerpConstant = 0.025;
+        this.eyeYLerpConstant = 0.025;
+
+        this.zoomOriginal = 70;
+        this.eyeYOriginal = 3;
 
         // Camera view attributes
-        this.eye     = new Vector3([0, 3, -3]);
+        this.eye     = new Vector3([0, this.eyeYOriginal, -3]);
         this.center  = new Vector3([0, 0,  0]);
         this.up      = new Vector3([0, 1,  0]);
 
@@ -33,8 +36,12 @@ class Camera {
 
     lerpZoom(fov, eyeY)
     {
-        this.zoom = ((this.zoomLerpConstant) * (fov) + (1 - this.zoomLerpConstant) * (this.zoom));
-        this.eye.elements[1] = ((this.eyeYLerpConstant) * (eyeY) + (1 - this.eyeYLerpConstant) * (this.eye.elements[1]));
+        if(this.zoomOriginal == fov && this.zoom > this.zoomOriginal - 0.01) {this.zoom = this.zoomOriginal} //Prevents constant function calls
+        else {this.zoom = ((this.zoomLerpConstant) * (fov) + (1 - this.zoomLerpConstant) * (this.zoom));}
+        
+        if(this.eyeYOriginal == eyeY && this.eye.elements[1] > this.eyeYOriginal - 0.01) {this.eye.elements[1] = this.eyeYOriginal;}
+        else {this.eye.elements[1] = ((this.eyeYLerpConstant) * (eyeY) + (1 - this.eyeYLerpConstant) * (this.eye.elements[1]));}
+
         this.updateView();
         this.projectionMatrix.setPerspective(this.zoom, canvas.width/canvas.height, 1, 100);
     }

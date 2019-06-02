@@ -45,6 +45,7 @@ class InputHandler {
       var geometriesArr = _inputHandler.scene.geometries;
       _inputHandler.isTalking = false;
       _inputHandler.talkingToVillager = null;
+      _inputHandler.camera.lerpZoom(70, 3);
       for(var geoI = 0; geoI < geometriesArr.length; geoI++)
       {
         if(geometriesArr[geoI] == _inputHandler.player) {continue;}
@@ -76,15 +77,10 @@ class InputHandler {
             if(geometriesArr[geoI] instanceof Villager)
             {
               //If so, initiate dialogue and camera zoom
-              _inputHandler.camera.lerpZoom(20, -0.5);
+              _inputHandler.camera.lerpZoom(35, 1.2);
               _inputHandler.isTalking = true;
               _inputHandler.talkingToVillager = geometriesArr[geoI];
             }
-          }
-          else
-          {
-            //If not colliding, then return camera back to original zoom
-            _inputHandler.camera.lerpZoom(70, 3);
           }
         }
       }
