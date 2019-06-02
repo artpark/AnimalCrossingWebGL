@@ -23,6 +23,9 @@ class Villager extends Geometry {
   
           this.name = name;
 
+          this.dialogueGenerator = new DialogueGenerator();
+          this.dialogue = this.dialogueGenerator.generate();
+
           //AABB vs AABB
           this.centerPoint = new Vector3([Tx, Ty, Tz]);
           this.halfWidth = new Vector3([0.4,0.4,0.4]);

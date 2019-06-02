@@ -102,6 +102,7 @@ function draw(inputHandler, hud, hudText)
     {
         drawChatHUD(inputHandler, hud, hudText);
     }
+
     requestAnimationFrame(function() {
         draw(inputHandler, hud, hudText);
     });
@@ -295,7 +296,22 @@ function drawChatHUD(inputHandler, hud, hudText)
     ctxText.font = "30px Arial";
     ctxText.fillStyle = "#000000";
     ctxText.textAlign = "center"; 
-    ctxText.fillText(inputHandler.talkingToVillager, (hud.width - hud.width/1.2)/2 + 135, hudText.height - imgHeight + 30);
+    ctxText.fillText(inputHandler.talkingToVillager.name, (hud.width - hud.width/1.2)/2 + 135, hudText.height - imgHeight + 30);
+
+    // Draw the dialogue text
+    ctxText.font = "30px Arial";
+    ctxText.fillStyle = "#FFFFFF";
+    ctxText.textAlign = "left"; 
+
+    var dialogue = inputHandler.talkingToVillager.dialogue;
+    var dialogueLines = dialogue.split('\n');
+    var lineHeight = 30;
+
+    for (var j = 0; j<dialogueLines.length; j++)
+    {
+        ctxText.strokeText(dialogueLines[j], (hud.width - hud.width/1.2)/2 + 120, hudText.height - imgHeight + 90 + (j * lineHeight));
+        ctxText.fillText(dialogueLines[j], (hud.width - hud.width/1.2)/2 + 120, hudText.height - imgHeight + 90 + (j * lineHeight));
+    }
 }
 
 function drawMap(inputHandler)
