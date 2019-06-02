@@ -25,10 +25,10 @@ function main() {
 
   // Create our input handler
   var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed temp player into inputhandler
-  inputHandler.update();    // Update the movement with every frame
-   
-  // Draw the HUD continuously
-  updateHUD(hud, hudText);
+
+  // Main drawin function that updates everything
+  // inputHandler.update(); is called inside here
+  draw(inputHandler, hud, hudText);
 
   // Draw the map
   drawMap(inputHandler);
@@ -84,17 +84,26 @@ function initializeShaders(gl)
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
 }
 
-function updateHUD(hud, hudText)
+function draw(inputHandler, hud, hudText)
 {
+    inputHandler.update();
+    
     var ctx = hud.getContext("2d");
-    var ctxText = hud.getContext("2d");
+    var ctxText = hudText.getContext("2d");
 
     ctx.clearRect(0, 0, hud.width, hud.height);
     ctxText.clearRect(0, 0, hudText.width, hudText.height);
 
-    drawDateTimeHUD(hud, hudText);
+    if(!inputHandler.isTalking)
+    {
+        drawDateTimeHUD(hud, hudText);
+    }
+    else
+    {
+        drawChatHUD(inputHandler, hud, hudText);
+    }
     requestAnimationFrame(function() {
-        updateHUD(hud, hudText);
+        draw(inputHandler, hud, hudText);
     });
 }
 
@@ -269,6 +278,26 @@ function drawDateTimeHUD(hud, hudText)
     ctxText.fillText(dayOfWeek, 137.5, hudText.height - imgHeight + 27.5);
 }
 
+function drawChatHUD(inputHandler, hud, hudText)
+{
+    var ctx = hud.getContext("2d");
+    var ctxText = hudText.getContext("2d");
+
+    var imgWidth = hud.width/1.2;
+    var imgHeight = 411/1.5;
+
+    // Draw the hud element image
+    var img = new Image();
+    img.src = "ui/chatui.png";
+    ctx.drawImage(img, (hud.width - hud.width/1.2)/2, hud.height - imgHeight - 15, imgWidth, imgHeight);
+
+    // Draw the name text
+    ctxText.font = "30px Arial";
+    ctxText.fillStyle = "#000000";
+    ctxText.textAlign = "center"; 
+    ctxText.fillText(inputHandler.talkingToVillager, (hud.width - hud.width/1.2)/2 + 135, hudText.height - imgHeight + 30);
+}
+
 function drawMap(inputHandler)
 {
     var testCube = new Cube(nonTexturedShader, null, 0, 0, 5);
@@ -295,9 +324,13 @@ function drawMap(inputHandler)
 function drawVillagers(inputHandler)
 {
     inputHandler.readTexture("objs/playertexture3.png", function(image) {
-        //var headTex = inputHandler.readTexture("objs/playerface.png");
-        var lucky = new Villager(texturedShader, image, 5, 0, 5);
+        var lucky = new Villager(texturedShader, image, "Lucky", 2, 0, 2);
         inputHandler.scene.addGeometry(lucky);
+    });
+
+    inputHandler.readTexture("objs/playertexture3.png", function(image) {
+        var isabelle = new Villager(texturedShader, image, "Isabelle", -2, 0, 2);
+        inputHandler.scene.addGeometry(isabelle);
     });
 }
 

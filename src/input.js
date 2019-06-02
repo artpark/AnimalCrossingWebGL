@@ -31,6 +31,10 @@ class InputHandler {
         this.dollySpeed = 0.3;
         this.diagScalar = 0.7;
 
+        // Dialogue with villagers
+        this.isTalking = false;
+        this.talkingToVillager = "null";
+        
         // Keyboard Events
         document.addEventListener('keydown', function(ev) { _inputHandler.keyDown(ev); }, false);
         document.addEventListener('keyup',   function(ev) { _inputHandler.keyUp(ev);   }, false);
@@ -39,6 +43,8 @@ class InputHandler {
     update()
     {
       var geometriesArr = _inputHandler.scene.geometries;
+      _inputHandler.isTalking = false;
+      _inputHandler.talkingToVillager = "null";
       for(var geoI = 0; geoI < geometriesArr.length; geoI++)
       {
         if(geometriesArr[geoI] == _inputHandler.player) {continue;}
@@ -71,6 +77,8 @@ class InputHandler {
             {
               //If so, initiate dialogue and camera zoom
               _inputHandler.camera.lerpZoom(20, -0.5);
+              _inputHandler.isTalking = true;
+              _inputHandler.talkingToVillager = geometriesArr[geoI].name;
             }
           }
           else
@@ -145,10 +153,6 @@ class InputHandler {
       }
 
       _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
-
-      //AABB vs AABB, updating player's position
-
-      requestAnimationFrame(_inputHandler.update);
     }
 
     testAABBAABB(geometryA, geometryB)

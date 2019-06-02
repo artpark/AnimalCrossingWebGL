@@ -13,7 +13,7 @@ class Villager extends Geometry {
      * @param {Shader} shader Shading object used to shade geometry
      * @returns {Villager} Villager created
      */
-    constructor(shader, image, Tx, Ty, Tz)
+    constructor(shader, image, name, Tx, Ty, Tz)
     {
           super(shader);
   
@@ -21,6 +21,8 @@ class Villager extends Geometry {
           this.faces = {0: this.vertices};
           this.image = image;
   
+          this.name = name;
+
           //AABB vs AABB
           this.centerPoint = new Vector3([Tx, Ty, Tz]);
           this.halfWidth = new Vector3([0.4,0.4,0.4]);
