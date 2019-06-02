@@ -33,7 +33,7 @@ class InputHandler {
 
         // Dialogue with villagers
         this.isTalking = false;
-        this.talkingToVillager = "null";
+        this.talkingToVillager = null;
         
         // Keyboard Events
         document.addEventListener('keydown', function(ev) { _inputHandler.keyDown(ev); }, false);
@@ -44,7 +44,7 @@ class InputHandler {
     {
       var geometriesArr = _inputHandler.scene.geometries;
       _inputHandler.isTalking = false;
-      _inputHandler.talkingToVillager = "null";
+      _inputHandler.talkingToVillager = null;
       for(var geoI = 0; geoI < geometriesArr.length; geoI++)
       {
         if(geometriesArr[geoI] == _inputHandler.player) {continue;}
@@ -78,7 +78,7 @@ class InputHandler {
               //If so, initiate dialogue and camera zoom
               _inputHandler.camera.lerpZoom(20, -0.5);
               _inputHandler.isTalking = true;
-              _inputHandler.talkingToVillager = geometriesArr[geoI].name;
+              _inputHandler.talkingToVillager = geometriesArr[geoI];
             }
           }
           else

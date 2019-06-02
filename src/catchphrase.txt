@@ -1,7 +1,7 @@
-"yup yup"
-"yessiree"
-"you know"
-"right"
-"uh-huh"
-"oh yup"
+"yup yup",
+"yessiree",
+"you know",
+"right",
+"uh-huh",
+"oh yup",
 "bazinga"
