@@ -26,7 +26,7 @@ class Player extends Geometry {
         this.image = image; // testing
 
         this.currentAngle = 0;
-        this.lerpConstant = 0.04;
+        this.lerpConstant = 0.05;
         this.rotationMatrix = new Matrix4();
 
         //AABB vs AABB
