@@ -7,11 +7,11 @@
  */
 class Player extends Geometry {
   /**
-   * Constructor for Square.
+   * Constructor for Player.
    *
    * @constructor
    * @param {Shader} shader Shading object used to shade geometry
-   * @returns {Square} Square created
+   * @returns {Player} Playervxcz created
    */
   constructor(shader, image)
   {
@@ -58,7 +58,6 @@ class Player extends Geometry {
     }
     this.currentAngle = ((this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle) % 360);
     this.rotationMatrix.setRotate(this.currentAngle, 0, 1, 0);
-    //console.log(this.currentAngle);
   }
 
   generatePlayerVertices(Tx, Ty, Tz)
