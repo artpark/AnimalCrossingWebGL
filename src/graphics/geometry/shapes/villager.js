@@ -200,7 +200,9 @@ class Villager extends Geometry {
       // If timer is up, switch directions
       if(this.walkDuration == 0)
       {
-        this.walkDirection = (this.walkDirection + ((Math.random() * 180) - 90) % 360);
+        this.walkDirection = (this.walkDirection + ((Math.random() * 240) - 120)) % 360;
+        if(this.walkDirection < 0) {this.walkDirection = (Math.random() * 360);}
+        console.log(this.walkDirection);
         this.walkDuration = Math.floor((Math.random() * 120) + 130);
       }
 
@@ -224,7 +226,7 @@ class Villager extends Geometry {
 
     faceAngle(turnToAngle)
     {
-      this.currentAngle = ((this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle) % 360);
+      this.currentAngle = ((this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle)) % 360;
       this.rotationMatrix.setRotate(this.currentAngle, 0, 1, 0);
     }
   }
