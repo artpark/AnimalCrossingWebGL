@@ -26,19 +26,19 @@ function main() {
   // Create our input handler
   var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed temp player into inputhandler
 
-  // Main drawin function that updates everything
+  // Main drawing function that updates everything
   // inputHandler.update(); is called inside here
   draw(inputHandler, hud, hudText);
 
   // Draw the map
   drawMap(inputHandler);
 
+  // TEST Draw particle
+  //drawParticle(inputHandler);
+
   // Initialize audio controller
   var audioController = new AudioController();
   audioController.playTimeMusic();
-
-  // Add our player onto the map
-  //scene.addGeometry(player);
 
   // Load skybox texture and add cube to scene with that texture.
   /*inputHandler.readTexture("objs/skybox.jpg", function(image) {
@@ -63,7 +63,7 @@ function initializeShaders(gl)
 {
   // Initialize textured shader
   texturedShader = new Shader(gl, TEXTURED_VSHADER, TEXTURED_FSHADER);
-  // Add attibutes
+  // Add attributes
   texturedShader.addAttribute("a_Position");
   texturedShader.addAttribute("a_Color");
   texturedShader.addAttribute("a_TexCoord");
@@ -76,7 +76,7 @@ function initializeShaders(gl)
 
   // Initialize non-textured shader
   nonTexturedShader = new Shader(gl, NONTEXTURED_VSHADER, NONTEXTURED_FSHADER);
-  // Add attibutes
+  // Add attributes
   nonTexturedShader.addAttribute("a_Position");
   nonTexturedShader.addAttribute("a_Color");
   // Add uniforms

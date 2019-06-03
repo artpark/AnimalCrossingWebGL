@@ -16,7 +16,6 @@ class Villager extends Geometry {
     constructor(shader, image, name, Tx, Ty, Tz)
     {
           super(shader);
-
           this.Tx = Tx;
           this.Ty = Ty;
           this.Tz = Tz;
