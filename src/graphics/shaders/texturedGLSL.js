@@ -23,7 +23,9 @@ var TEXTURED_FSHADER =
   varying vec2 v_TexCoord;
 
   uniform sampler2D u_Sampler;
+  uniform mat4 u_dayEveningNightFilter;
 
   void main() {
-    gl_FragColor = texture2D(u_Sampler, v_TexCoord);
+    vec4 texelColor = texture2D(u_Sampler, v_TexCoord).rgba;
+    gl_FragColor = u_dayEveningNightFilter * texelColor;
   }`;

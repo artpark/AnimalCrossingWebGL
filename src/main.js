@@ -40,6 +40,37 @@ function main() {
   var audioController = new AudioController();
   audioController.playTimeMusic();
 
+  var date = new Date();
+  var hour = date.getHours();
+  var dayEveningNightFilter = new Matrix4();
+
+  // Daytime: 7  - 16
+  // Evening: 5  -  6 or 17 - 20
+  // Night:   21 - 23 or 0  - 4  
+
+  if(hour >= 21 || hour <= 4) //Night filter
+  {
+    dayEveningNightFilter.elements = new Float32Array( [0.293, 0.369, 0.489, 0,
+                                                        0.249, 0.286, 0.468, 0,
+                                                        0.172, 0.134, 0.431, 0,
+                                                        0    , 0    , 0    , 1]) ;
+  }
+  else if(hour >= 5 && hour <= 6 || hour >= 17 && hour <= 20) //Evening filter
+  {
+    dayEveningNightFilter.elements = new Float32Array( [0.493, 0.469, 0.189, 0,
+                                                        0.449, 0.386, 0.168, 0,
+                                                        0.372, 0.234, 0.131, 0,
+                                                        0    , 0    , 0    , 1]) ;
+  }
+  else //No filter (day)
+  {
+    dayEveningNightFilter.elements = new Float32Array( [1, 0, 0, 0,
+                                                        0, 1, 0, 0,
+                                                        0, 0, 1, 0,
+                                                        0, 0, 0, 1]) ;
+  }
+
+  texturedShader.setUniform("u_dayEveningNightFilter", dayEveningNightFilter.elements);
   // Load skybox texture and add cube to scene with that texture.
   /*inputHandler.readTexture("objs/skybox.jpg", function(image) {
       var skybox = new Skybox(texturedShader, image);
@@ -68,11 +99,11 @@ function initializeShaders(gl)
   texturedShader.addAttribute("a_Color");
   texturedShader.addAttribute("a_TexCoord");
   // Add uniforms
-  var idMatrix = new Matrix4();
-  texturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
+  texturedShader.addUniform("u_ModelMatrix", "mat4", new Matrix4().elements);
   texturedShader.addUniform("u_Sampler", "sampler2D", new Matrix4().elements);
   texturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
   texturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+  texturedShader.addUniform("u_dayEveningNightFilter", "mat4", new Matrix4().elements); // Vector to multiply RGB by day/evening/night filters1
 
   // Initialize non-textured shader
   nonTexturedShader = new Shader(gl, NONTEXTURED_VSHADER, NONTEXTURED_FSHADER);
@@ -80,10 +111,10 @@ function initializeShaders(gl)
   nonTexturedShader.addAttribute("a_Position");
   nonTexturedShader.addAttribute("a_Color");
   // Add uniforms
-  var idMatrix = new Matrix4();
-  nonTexturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
+  nonTexturedShader.addUniform("u_ModelMatrix", "mat4", new Matrix4().elements);
   nonTexturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+  nonTexturedShader.addUniform("u_dayEveningNightFilter", "vec4", new Matrix4().elements); // Vector to multiply RGB by day/evening/night filters
 }
 
 function draw(inputHandler, hud, hudText)

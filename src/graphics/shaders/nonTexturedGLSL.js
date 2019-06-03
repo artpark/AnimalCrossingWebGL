@@ -9,6 +9,8 @@ var NONTEXTURED_VSHADER =
   uniform mat4 u_ViewMatrix;
   uniform mat4 u_ProjectionMatrix;
 
+  uniform mat4 u_dayEveningNightFilter;
+
   void main() {
     v_Color = a_Color;
     gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_ModelMatrix * a_Position;
@@ -19,6 +21,8 @@ var NONTEXTURED_FSHADER =
   `precision mediump float;
   varying vec4 v_Color;
 
+  uniform mat4 u_dayEveningNightFilter;
+
   void main() {
-    gl_FragColor = v_Color;
+    gl_FragColor = u_dayEveningNightFilter * v_Color;
   }`;
