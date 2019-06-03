@@ -34,7 +34,7 @@ function main() {
   drawMap(inputHandler);
 
   // TEST Draw particle
-  //drawParticle(inputHandler);
+  drawParticles(inputHandler);
 
   // Initialize audio controller
   var audioController = new AudioController();
@@ -394,5 +394,13 @@ function drawTree(inputHandler, x, z)
     inputHandler.readTexture("objs/treetexture4.png", function(image) {
         var tree = new Tree(texturedShader, image, x, 0, z);
         inputHandler.scene.addGeometry(tree);
+    });
+}
+
+function drawParticles(inputHandler)
+{
+    inputHandler.readTexture("objs/playershirt.png", function(image) {
+        var particles = new Particle(texturedShader, image);
+        inputHandler.scene.addGeometry(particles);
     });
 }

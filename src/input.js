@@ -25,6 +25,7 @@ class InputHandler {
         this.right = false;
         this.up = false;
         this.down = false;
+        this.sprint = false;
 
         // Movement constants
         this.truckSpeed = 0.3;
@@ -172,6 +173,7 @@ class InputHandler {
         console.log("key down", keyName);
 
         if(keyName == "Shift") {
+          this.sprint = true;
           this.truckSpeed = 0.6;
           this.dollySpeed = 0.6;
         }
@@ -194,6 +196,7 @@ class InputHandler {
         console.log("key up", keyName);
     
         if(keyName == "Shift") {
+          this.sprint = false;
           this.truckSpeed = 0.3;
           this.dollySpeed = 0.3;
         }
