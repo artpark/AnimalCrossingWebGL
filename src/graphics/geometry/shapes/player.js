@@ -65,12 +65,35 @@ class Player extends Geometry {
   {
       var vertices = []
       var segConstant = Math.PI / 3;  // for vertice generation calculations
+
+      var shadowW = 0.28;
+
       var torsoW =    0.25;            // scalar for torso width
       var torsoH =    0.6;            // scalar for torso height
       var topScalar = 0.7;            // scalar for torso cone shape
 
       var headW = 0.3;
       var headH = 0.4;
+
+      // generate shadow vertices
+      for (var i = 0; i < 6; i++)
+      {
+        // create vertices
+        var vertex1 = new Vertex(  shadowW*Math.cos((i+1) * segConstant)+Tx, 0.01, shadowW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex2 = new Vertex(  shadowW*Math.cos(    i * segConstant)+Tx, 0.01, shadowW * Math.sin(    i * segConstant)+Tz);
+        var vertex3 = new Vertex(                                        Tx, 0.01,                                         Tz);      
+        // set vertex color
+        vertex1.texCoord = [0.0, 0.9999];
+        vertex2.texCoord = [0.1, 0.9999];
+        vertex3.texCoord = [0.1, 1.0];
+        /*vertex1.color = [0.0, 0.0, 0.0, 0.5];
+        vertex2.color = [0.0, 0.0, 0.0, 0.5];
+        vertex3.color = [0.0, 0.0, 0.0, 0.5];*/
+        // push vertices
+        vertices.push(vertex1);
+        vertices.push(vertex2);
+        vertices.push(vertex3);
+      }
 
       // generate torso vertices
       for (var i = 0; i < 6; i++)

@@ -26,19 +26,19 @@ function main() {
   // Create our input handler
   var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed temp player into inputhandler
 
-  // Main drawin function that updates everything
+  // Main drawing function that updates everything
   // inputHandler.update(); is called inside here
   draw(inputHandler, hud, hudText);
 
   // Draw the map
   drawMap(inputHandler);
 
+  // TEST Draw particle
+  //drawParticle(inputHandler);
+
   // Initialize audio controller
   var audioController = new AudioController();
   audioController.playTimeMusic();
-
-  // Add our player onto the map
-  //scene.addGeometry(player);
 
   // Load skybox texture and add cube to scene with that texture.
   /*inputHandler.readTexture("objs/skybox.jpg", function(image) {
@@ -63,7 +63,7 @@ function initializeShaders(gl)
 {
   // Initialize textured shader
   texturedShader = new Shader(gl, TEXTURED_VSHADER, TEXTURED_FSHADER);
-  // Add attibutes
+  // Add attributes
   texturedShader.addAttribute("a_Position");
   texturedShader.addAttribute("a_Color");
   texturedShader.addAttribute("a_TexCoord");
@@ -76,7 +76,7 @@ function initializeShaders(gl)
 
   // Initialize non-textured shader
   nonTexturedShader = new Shader(gl, NONTEXTURED_VSHADER, NONTEXTURED_FSHADER);
-  // Add attibutes
+  // Add attributes
   nonTexturedShader.addAttribute("a_Position");
   nonTexturedShader.addAttribute("a_Color");
   // Add uniforms
@@ -84,6 +84,19 @@ function initializeShaders(gl)
   nonTexturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
   nonTexturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
+
+  // Initalize particle shader
+  particleShader = new Shader(gl, PARTICLE_VSHADER, PARTICLE_FSHADER);
+  // Add attributes
+  texturedShader.addAttribute("a_Position");
+  texturedShader.addAttribute("a_Color");
+  texturedShader.addAttribute("a_TexCoord");
+  // Add uniforms
+  var idMatrix = new Matrix4();
+  texturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
+  texturedShader.addUniform("u_Sampler", "sampler2D", new Matrix4().elements);
+  texturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
+  texturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
 }
 
 function draw(inputHandler, hud, hudText)
@@ -361,12 +374,17 @@ function drawVillagers(inputHandler)
 function drawTree(inputHandler, x, z)
 {
     inputHandler.readTexture("objs/treetexture4.png", function(image) {
-        //var headTex = inputHandler.readTexture("objs/playerface.png");
         var tree = new Tree(texturedShader, image, x, 0, z);
         inputHandler.scene.addGeometry(tree);
-        tree = new Tree(texturedShader, image, 4.5, 0, 3);
-        inputHandler.scene.addGeometry(tree);
-        tree = new Tree(texturedShader, image, 4, 0, 4.5);
-        inputHandler.scene.addGeometry(tree);
+    });
+}
+
+// TEMP: Particle Functions
+
+function drawParticle(inputHandler)
+{
+    inputHandler.readTexture("objs/playershirt.png", function(image) {
+        var particle = new Particle(texturedShader, image, inputHandler.camera.eye.elements[0], inputHandler.camera.eye.elements[2]);
+        inputHandler.scene.addGeometry(particle);
     });
 }

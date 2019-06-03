@@ -17,6 +17,10 @@ class Villager extends Geometry {
     {
           super(shader);
   
+          this.Tx = Tx;
+          this.Ty = Ty;
+          this.Tz = Tz;
+
           this.vertices = this.generateVillagerVertices(Tx, Ty, Tz);
           this.faces = {0: this.vertices};
           this.image = image;

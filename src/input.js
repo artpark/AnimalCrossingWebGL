@@ -170,7 +170,11 @@ class InputHandler {
     keyDown(ev) {
         var keyName = event.key;
         console.log("key down", keyName);
-    
+
+        if(keyName == "Shift") {
+          this.truckSpeed = 0.6;
+          this.dollySpeed = 0.6;
+        }
         if(keyName == "a" || keyName == "A" || keyName == "ArrowLeft") {
           _inputHandler.left = true;
         }
@@ -189,6 +193,10 @@ class InputHandler {
         var keyName = event.key;
         console.log("key up", keyName);
     
+        if(keyName == "Shift") {
+          this.truckSpeed = 0.3;
+          this.dollySpeed = 0.3;
+        }
         if(keyName == "a" || keyName == "A" || keyName == "ArrowLeft") {
           _inputHandler.left = false;
         }
