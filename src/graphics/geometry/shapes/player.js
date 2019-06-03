@@ -65,7 +65,7 @@ class Player extends Geometry {
   {
       var vertices = []
       var segConstant = Math.PI / 3;  // for vertice generation calculations
-      var torsoW =    0.2;            // scalar for torso width
+      var torsoW =    0.25;            // scalar for torso width
       var torsoH =    0.6;            // scalar for torso height
       var topScalar = 0.7;            // scalar for torso cone shape
 
@@ -76,20 +76,26 @@ class Player extends Geometry {
       for (var i = 0; i < 6; i++)
       {
         // create vertices
-        var vertex1 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0, torsoW * Math.sin(    i * segConstant)+Tz);
-        var vertex2 = new Vertex(             torsoW*Math.cos((i+1) * segConstant)+Tx,      0, torsoW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex1 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0.3, torsoW * Math.sin(    i * segConstant)+Tz);
+        var vertex2 = new Vertex(             torsoW*Math.cos((i+1) * segConstant)+Tx,      0.3, torsoW * Math.sin((i+1) * segConstant)+Tz);
         var vertex3 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
-        var vertex4 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0, torsoW * Math.sin(    i * segConstant)+Tz);
+        var vertex4 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0.3, torsoW * Math.sin(    i * segConstant)+Tz);
         var vertex5 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
         var vertex6 = new Vertex( topScalar * torsoW*Math.cos(    i * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin(    i * segConstant)+Tz);
         // set texture coordinates
         
         if (i == 4) // front face
         {
-          vertex1.texCoord = [0.0, -0.5];
+          /*vertex1.texCoord = [0.0, -0.5];
           vertex2.texCoord = [0.5, -0.5];
           vertex3.texCoord = [0.4, 0.65];
           vertex4.texCoord = [0.0, -0.5];
+          vertex5.texCoord = [0.4, 0.65];
+          vertex6.texCoord = [0.1, 0.65];*/
+          vertex1.texCoord = [0.0, 0.0];
+          vertex2.texCoord = [0.5, 0.0];
+          vertex3.texCoord = [0.4, 0.65];
+          vertex4.texCoord = [0.0, 0.0];
           vertex5.texCoord = [0.4, 0.65];
           vertex6.texCoord = [0.1, 0.65];
         }

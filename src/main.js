@@ -303,7 +303,7 @@ function drawChatHUD(inputHandler, hud, hudText)
     // Draw the dialogue text
     ctxText.font = "30px Arial";
     ctxText.fillStyle = "#FFFFFF";
-    ctxText.textAlign = "left"; 
+    ctxText.textAlign = "left";
 
     var dialogue = inputHandler.talkingToVillager.dialogue;
     var dialogueLines = dialogue.split('\n');
@@ -324,7 +324,7 @@ function drawMap(inputHandler)
         inputHandler.scene.addGeometry(plane);
     });
 
-    // load player shirt texture, apply it to a Player object, and
+    // load player texture, apply it to a Player object, and
     // replace inputHandler's Player with the new textured object
     inputHandler.readTexture("objs/playertexture3.png", function(image) {
         //var headTex = inputHandler.readTexture("objs/playerface.png");
@@ -363,6 +363,10 @@ function drawTree(inputHandler, x, z)
     inputHandler.readTexture("objs/treetexture4.png", function(image) {
         //var headTex = inputHandler.readTexture("objs/playerface.png");
         var tree = new Tree(texturedShader, image, x, 0, z);
+        inputHandler.scene.addGeometry(tree);
+        tree = new Tree(texturedShader, image, 4.5, 0, 3);
+        inputHandler.scene.addGeometry(tree);
+        tree = new Tree(texturedShader, image, 4, 0, 4.5);
         inputHandler.scene.addGeometry(tree);
     });
 }
