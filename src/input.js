@@ -28,6 +28,9 @@ class InputHandler {
         this.down = false;
         this.sprint = false;
 
+        // Particle test float
+        this.particleTick = 0;
+
         // Movement constants
         this.truckSpeed = 0.3;
         this.dollySpeed = 0.3;
@@ -160,7 +163,12 @@ class InputHandler {
       }
 
       _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
-      _inputHandler.particle.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0]+0.4, 0, _inputHandler.camera.eye.elements[2]+3.3);
+
+       if (this.particleTick == 0)
+       {
+          _inputHandler.particle.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
+       }
+       this.particleTick = (this.particleTick + 1) % 30;
     }
 
     testAABBAABB(geometryA, geometryB)
