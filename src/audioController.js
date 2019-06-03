@@ -15,6 +15,8 @@ class AudioController {
         var date = new Date();
         var hour = date.getHours();
         var soundtrackID = "";
+
+        // Getting the right track to play by using the time and date //
         if(hour < 12) // AM 
         {
             // If 12AM
@@ -29,7 +31,6 @@ class AudioController {
         }
 
         this.timeMusic = document.getElementById(soundtrackID);
-        console.log(soundtrackID);
     }
 
     playTimeMusic()

@@ -14,7 +14,7 @@ class DialogueGenerator {
     constructor() {
         this.dialogueCommon = [ 
             "[greeting]! How can I help, \n[catchphrase]?",
-            "[greeting], James Davis. \nNeed to chat about something, [catchphrase]?",
+            "[greeting], James Davis. \nNeed to chat about something, \n[catchphrase]?",
             "[greeting], James Davis! \nWhat's going on, [catchphrase]?",
             "Hi there, James Davis! \nIt's nice to see so much \nof you today, [catchphrase].",
             "[greeting]. Doing all right, [catchphrase]?",
