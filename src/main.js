@@ -337,7 +337,7 @@ function drawMap(inputHandler)
     {
         for(var x = -16; x < 16; x++)
         {
-            if(Math.random() < 0.02) //2% chance
+            if(Math.random() < 0.01) //1% chance
             {
                 drawTree(inputHandler, x, z);
             }
