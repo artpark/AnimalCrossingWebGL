@@ -20,11 +20,12 @@ function main() {
   // Initialize shaders
   initializeShaders(gl);
 
-  // Create temp player (will be replaced after inputHandler initiated)
+  // Create temp player and particle (will be replaced after inputHandler initiated)
   var player = new Player(texturedShader);
+  var particle = new Particle(texturedShader);
 
   // Create our input handler
-  var inputHandler = new InputHandler(canvas, scene, camera, player);   // Feed temp player into inputhandler
+  var inputHandler = new InputHandler(canvas, scene, camera, player, particle);   // Feed temp player into inputhandler
 
   // Main drawing function that updates everything
   // inputHandler.update(); is called inside here
@@ -400,7 +401,7 @@ function drawTree(inputHandler, x, z)
 function drawParticles(inputHandler)
 {
     inputHandler.readTexture("objs/playershirt.png", function(image) {
-        var particles = new Particle(texturedShader, image);
-        inputHandler.scene.addGeometry(particles);
+        inputHandler.particle = new Particle(texturedShader, image);
+        inputHandler.scene.addGeometry(inputHandler.particle);
     });
 }

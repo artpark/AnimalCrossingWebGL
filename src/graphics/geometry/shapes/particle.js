@@ -23,6 +23,12 @@ class Particle extends Geometry {
 
         this.timeElapsed = 0.0;
 
+        this.rot = 0;
+
+        this.currentAngle = 0;
+        this.lerpConstant = 0.05;
+        this.rotationMatrix = new Matrix4();
+
         this.vertices = this.generateParticleVertices(this.Tx, this.Ty, this.Tz);
         this.faces = {0: this.vertices};
         this.image = image; // testing
@@ -33,33 +39,56 @@ class Particle extends Geometry {
 
   render()
   {
-      var translation = new Matrix4();
-      var scale = new Matrix4();
+      //console.log(this.currentAngle);
+      var transformation = new Matrix4();
+      transformation.set(this.modelMatrix);
+      var scaleMatrix = new Matrix4();
       var particleScalar = 1.5 - this.timeElapsed;
-      scale.setScale(particleScalar, particleScalar, particleScalar);
+      scaleMatrix.setScale(particleScalar, particleScalar, particleScalar);
+      this.rotationMatrix.setRotate(this.rot, 0, 1, 0);
+      this.rot = (this.rot + 2) % 360;
+      transformation.multiply(this.rotationMatrix);
 
       // if sprinting
       if (_inputHandler.sprint) {
          if (particleScalar > 0)
          {
-            this.timeElapsed += 0.08;
+            this.timeElapsed += 0.05;
          }
          else
          {
             this.timeElapsed = 0.0;
          }
-         translation.multiply(scale);
-         this.shader.setUniform("u_ModelMatrix", translation.elements);
+         transformation.multiply(scaleMatrix);
+         this.shader.setUniform("u_ModelMatrix", transformation.elements);
+         //this.shader.setUniform("u_ModelMatrix", this.modelMatrix.elements);
+
+         //this.modelMatrix.elements
+         //super.render();
       }
       // if walking
       else{
          if (particleScalar > 0)
          {
-            this.timeElapsed += 0.08;
+            this.timeElapsed += 0.05;
          }
-         translation.multiply(scale);
-         this.shader.setUniform("u_ModelMatrix", translation.elements);
+         transformation.multiply(scaleMatrix);
+         this.shader.setUniform("u_ModelMatrix", transformation.elements);
       }
+  }
+
+  faceAngle(turnToAngle)
+  {
+    if(this.currentAngle >= 270)
+    {
+      this.currentAngle -= 360;
+    }
+    if(this.currentAngle <= -270)
+    {
+      this.currentAngle += 360;
+    }
+    this.currentAngle = ((this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle) % 360);
+    //this.rotationMatrix.setRotate(this.currentAngle, 0, 1, 0);
   }
 
   generateParticleVertices(Tx, Ty, Tz)
@@ -67,23 +96,23 @@ class Particle extends Geometry {
       var vertices = []
       var segConstant = Math.PI / 3;  // for vertice generation calculations
 
-      var headW = 0.1;
-      var headH = 0.1;
+      var particleW = 0.1;
+      var particleH = 0.1;
 
-      // generate head vertices
+      // generate particle vertices
       for (var i = 0; i < 6; i++)
       {
         // create vertices
-        var vertex1 = new Vertex(  headW*Math.cos(    i * segConstant)+Tx,    Ty, headW * Math.sin(    i * segConstant)+Tz);
-        var vertex2 = new Vertex(  headW*Math.cos((i+1) * segConstant)+Tx,    Ty, headW * Math.sin((i+1) * segConstant)+Tz);
-        var vertex3 = new Vertex(  headW*Math.cos((i+1) * segConstant)+Tx, headH, headW * Math.sin((i+1) * segConstant)+Tz);
-        var vertex4 = new Vertex(  headW*Math.cos(    i * segConstant)+Tx,    Ty, headW * Math.sin(    i * segConstant)+Tz);
-        var vertex5 = new Vertex(  headW*Math.cos((i+1) * segConstant)+Tx, headH, headW * Math.sin((i+1) * segConstant)+Tz);
-        var vertex6 = new Vertex(  headW*Math.cos(    i * segConstant)+Tx, headH, headW * Math.sin(    i * segConstant)+Tz);
+        var vertex1 = new Vertex(  particleW*Math.cos(    i * segConstant)+Tx,    Ty, particleW * Math.sin(    i * segConstant)+Tz);
+        var vertex2 = new Vertex(  particleW*Math.cos((i+1) * segConstant)+Tx,    Ty, particleW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex3 = new Vertex(  particleW*Math.cos((i+1) * segConstant)+Tx, particleH, particleW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex4 = new Vertex(  particleW*Math.cos(    i * segConstant)+Tx,    Ty, particleW * Math.sin(    i * segConstant)+Tz);
+        var vertex5 = new Vertex(  particleW*Math.cos((i+1) * segConstant)+Tx, particleH, particleW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex6 = new Vertex(  particleW*Math.cos(    i * segConstant)+Tx, particleH, particleW * Math.sin(    i * segConstant)+Tz);
 
-        var vertex7 = new Vertex(  headW*Math.cos((i+1) * segConstant)+Tx, headH, headW * Math.sin((i+1) * segConstant)+Tz);
-        var vertex8 = new Vertex(  headW*Math.cos(    i * segConstant)+Tx, headH, headW * Math.sin(    i * segConstant)+Tz);
-        var vertex9 = new Vertex(                                      Tx, headH+0.05,                                  Tz);
+        var vertex7 = new Vertex(  particleW*Math.cos((i+1) * segConstant)+Tx, particleH, particleW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex8 = new Vertex(  particleW*Math.cos(    i * segConstant)+Tx, particleH, particleW * Math.sin(    i * segConstant)+Tz);
+        var vertex9 = new Vertex(                                      Tx, particleH+0.05,                                  Tz);
         // set texture coordinates
         vertex1.texCoord = [0.3, 0.31];
         vertex2.texCoord = [0.31, 0.31];

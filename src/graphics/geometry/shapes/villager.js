@@ -202,7 +202,6 @@ class Villager extends Geometry {
       {
         this.walkDirection = (this.walkDirection + ((Math.random() * 240) - 120)) % 360;
         if(this.walkDirection < 0) {this.walkDirection = (Math.random() * 360);}
-        console.log(this.walkDirection);
         this.walkDuration = Math.floor((Math.random() * 120) + 130);
       }
 
