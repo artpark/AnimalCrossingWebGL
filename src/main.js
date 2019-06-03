@@ -84,19 +84,6 @@ function initializeShaders(gl)
   nonTexturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
   nonTexturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
   nonTexturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
-
-  // Initalize particle shader
-  particleShader = new Shader(gl, PARTICLE_VSHADER, PARTICLE_FSHADER);
-  // Add attributes
-  texturedShader.addAttribute("a_Position");
-  texturedShader.addAttribute("a_Color");
-  texturedShader.addAttribute("a_TexCoord");
-  // Add uniforms
-  var idMatrix = new Matrix4();
-  texturedShader.addUniform("u_ModelMatrix", "mat4", idMatrix.elements);
-  texturedShader.addUniform("u_Sampler", "sampler2D", new Matrix4().elements);
-  texturedShader.addUniform("u_ViewMatrix", "mat4", new Matrix4().elements);
-  texturedShader.addUniform("u_ProjectionMatrix", "mat4", new Matrix4().elements);
 }
 
 function draw(inputHandler, hud, hudText)
@@ -376,15 +363,5 @@ function drawTree(inputHandler, x, z)
     inputHandler.readTexture("objs/treetexture4.png", function(image) {
         var tree = new Tree(texturedShader, image, x, 0, z);
         inputHandler.scene.addGeometry(tree);
-    });
-}
-
-// TEMP: Particle Functions
-
-function drawParticle(inputHandler)
-{
-    inputHandler.readTexture("objs/playershirt.png", function(image) {
-        var particle = new Particle(texturedShader, image, inputHandler.camera.eye.elements[0], inputHandler.camera.eye.elements[2]);
-        inputHandler.scene.addGeometry(particle);
     });
 }

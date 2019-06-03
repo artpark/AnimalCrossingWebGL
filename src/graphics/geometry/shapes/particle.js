@@ -4,7 +4,7 @@
  * @author Terence So
  * @this {Triangle}
  */
-class Particle extends Geometry {
+class Particle1 extends Geometry {
   /**
    * Constructor for Plane.
    *
