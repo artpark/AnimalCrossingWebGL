@@ -90,6 +90,8 @@ function draw(inputHandler, hud, hudText)
 {
     inputHandler.update();
     
+    updateVillagers(inputHandler);
+
     var ctx = hud.getContext("2d");
     var ctxText = hudText.getContext("2d");
 
@@ -333,6 +335,7 @@ function drawMap(inputHandler)
     });
 
     drawVillagers(inputHandler);
+
     for(var z = -16; z < 16; z++)
     {
         for(var x = -16; x < 16; x++)
@@ -358,15 +361,38 @@ function drawVillagers(inputHandler)
     });
 }
 
+function updateVillagers(inputHandler)
+{
+    var geometriesArr = inputHandler.scene.geometries;
+    for(var geoI = 0; geoI < geometriesArr.length; geoI++)
+    {
+        // If the geometry is of type villager, then make it randomly walk around
+        if(geometriesArr[geoI] instanceof Villager)
+        {
+            // If we are talking to this specific villager, do not let them randomly walk around
+            // If we are not talking to anyone, let everyone randomly walk
+            if(inputHandler.talkingToVillager == null || inputHandler.talkingToVillager.name != geometriesArr[geoI].name) 
+            {
+                geometriesArr[geoI].randomWalk();
+            }
+            else // If player is talking to the villager, make them face the player
+            {
+                // Calculate where to look
+                var playerToVillager = inputHandler.talkingToVillager.centerPoint.sub(inputHandler.player.centerPoint); 
+
+                // atan2 gets the angle for a ray from 0,0 to x,y      
+                var angle = (Math.atan2(playerToVillager.elements[0], playerToVillager.elements[2])) * 180 / Math.PI;
+                console.log(angle);
+                geometriesArr[geoI].faceAngle(angle);
+            }
+        }
+    }
+}
+
 function drawTree(inputHandler, x, z)
 {
     inputHandler.readTexture("objs/treetexture4.png", function(image) {
-        //var headTex = inputHandler.readTexture("objs/playerface.png");
         var tree = new Tree(texturedShader, image, x, 0, z);
-        inputHandler.scene.addGeometry(tree);
-        tree = new Tree(texturedShader, image, 4.5, 0, 3);
-        inputHandler.scene.addGeometry(tree);
-        tree = new Tree(texturedShader, image, 4, 0, 4.5);
         inputHandler.scene.addGeometry(tree);
     });
 }

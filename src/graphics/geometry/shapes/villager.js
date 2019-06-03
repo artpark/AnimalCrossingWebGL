@@ -16,27 +16,55 @@ class Villager extends Geometry {
     constructor(shader, image, name, Tx, Ty, Tz)
     {
           super(shader);
-  
-          this.vertices = this.generateVillagerVertices(Tx, Ty, Tz);
+
+          this.Tx = Tx;
+          this.Ty = Ty;
+          this.Tz = Tz;
+
+          this.vertices = this.generateVillagerVertices(this.Tx, this.Ty, this.Tz);
           this.faces = {0: this.vertices};
           this.image = image;
-  
-          this.name = name;
 
+          // Rotations
+          this.currentAngle = 0;
+          this.lerpConstant = 0.05;
+          this.rotationMatrix = new Matrix4();
+
+          // Dialogue variables
+          this.name = name;
           this.dialogueGenerator = new DialogueGenerator();
           this.dialogue = this.dialogueGenerator.generate();
 
-          //AABB vs AABB
-          this.centerPoint = new Vector3([Tx, Ty, Tz]);
+          // Random walking variables
+          this.speed = 0.005;
+          this.walkDirection = Math.random() * 360;
+          this.walkDuration = Math.floor((Math.random() * 120) + 130);
+
+          // AABB vs AABB
+          this.centerPoint = new Vector3([this.Tx, this.Ty, this.Tz]);
           this.halfWidth = new Vector3([0.4,0.4,0.4]);
   
           // CALL THIS AT THE END OF ANY SHAPE CONSTRUCTOR
           this.interleaveVertices();
     }
   
+    render()
+    {
+      var translateToOrigin = new Matrix4();
+      var modelMatrixCopy = new Matrix4();
+      modelMatrixCopy.set(this.modelMatrix);
+      translateToOrigin.setTranslate(this.Tx, this.Ty, this.Tz);
+      modelMatrixCopy.multiply(translateToOrigin);
+      modelMatrixCopy.multiply(this.rotationMatrix);
+      translateToOrigin.setTranslate(-this.Tx, -this.Ty, -this.Tz);
+      modelMatrixCopy.multiply(translateToOrigin);
+      
+      this.shader.setUniform("u_ModelMatrix", modelMatrixCopy.elements);
+    }
+
     generateVillagerVertices(Tx, Ty, Tz)
     {
-        var vertices = []
+      var vertices = []
       var segConstant = Math.PI / 3;  // for vertice generation calculations
       var torsoW =    0.2;            // scalar for torso width
       var torsoH =    0.6;            // scalar for torso height
@@ -165,6 +193,40 @@ class Villager extends Geometry {
       }
   
         return vertices;
+    }
+
+    // TO-DO: check collision for villagers and other geometries
+    randomWalk(geometries)
+    {
+      // If timer is up, switch directions
+      if(this.walkDuration == 0)
+      {
+        this.walkDirection = (this.walkDirection + ((Math.random() * 180) - 90) % 360);
+        this.walkDuration = Math.floor((Math.random() * 120) + 130);
+      }
+
+      // Face specific angle
+      this.faceAngle(this.walkDirection);
+
+      // Move in that angle
+      var translationMatrix = new Matrix4();
+      var walkDirectionRadians = this.walkDirection * (Math.PI / 180);
+
+      translationMatrix.setTranslate(-Math.sin(walkDirectionRadians) * this.speed, 0, -Math.cos(walkDirectionRadians) * this.speed);
+      this.modelMatrix.multiply(translationMatrix);
+
+      // Update center point for hit collision
+      var processedPosition = this.modelMatrix.multiplyVector3(new Vector3([this.Tx, this.Ty, this.Tz]));
+      this.centerPoint = new Vector3([processedPosition.elements[0], processedPosition.elements[1], processedPosition.elements[2]]);
+
+      // Reduce the timer
+      this.walkDuration--;
+    }
+
+    faceAngle(turnToAngle)
+    {
+      this.currentAngle = ((this.lerpConstant) * (turnToAngle) + (1 - this.lerpConstant) * (this.currentAngle) % 360);
+      this.rotationMatrix.setRotate(this.currentAngle, 0, 1, 0);
     }
   }
   
