@@ -303,7 +303,7 @@ function drawChatHUD(inputHandler, hud, hudText)
     ctxText.font = "30px Arial";
     ctxText.fillStyle = "#000000";
     ctxText.textAlign = "center"; 
-    ctxText.fillText(inputHandler.talkingToVillager.name, (hud.width - hud.width/1.2)/2 + 135, hudText.height - imgHeight + 30);
+    ctxText.fillText(inputHandler.talkingToVillager.name, (hud.width - hud.width/1.2)/2 + 150, hudText.height - imgHeight + 30);
 
     // Draw the dialogue text
     ctxText.font = "30px Arial";
