@@ -2,91 +2,62 @@ var texturedShader = null;
 var nonTexturedShader = null;
 
 function main() {
-  // Retrieve the canvas from the HTML document
-  canvas = document.getElementById("webgl");
-  var hud = document.getElementById("hud"); 
-  var hudText = document.getElementById("hudText"); 
-  // Retrieve WebGL rendering context
-  var gl = getWebGLContext(canvas);
-  if (!gl) {
+    // Retrieve the canvas from the HTML document
+    canvas = document.getElementById("webgl");
+    var hud = document.getElementById("hud"); 
+    var hudText = document.getElementById("hudText"); 
+    // Retrieve WebGL rendering context
+    var gl = getWebGLContext(canvas);
+    if (!gl) {
     console.log("Failed to get WebGL rendering context.");
     return;
-  }
+    }
 
-  // Initialize the scene and camera
-  var scene = new Scene();
-  var camera = new Camera();
+    // Initialize the scene and camera
+    var scene = new Scene();
+    var camera = new Camera();
 
-  // Initialize shaders
-  initializeShaders(gl);
+    // Initialize shaders
+    initializeShaders(gl);
 
-  // Create temp player and particle (will be replaced after inputHandler initiated)
-  var player = new Player(texturedShader);
-  var particle = new Particle(texturedShader);
+    // Create temp player and particle (will be replaced after inputHandler initiated)
+    var player = new Player(texturedShader);
+    var particle = new Particle(texturedShader);
 
-  // Create our input handler
-  var inputHandler = new InputHandler(canvas, scene, camera, player, particle);   // Feed temp player into inputhandler
+    // Create our input handler
+    var inputHandler = new InputHandler(canvas, scene, camera, player, particle);   // Feed temp player into inputhandler
 
-  // Main drawing function that updates everything
-  // inputHandler.update(); is called inside here
-  draw(inputHandler, hud, hudText);
+    // Main drawing function that updates everything
+    // inputHandler.update(); is called inside here
+    draw(inputHandler, hud, hudText);
 
-  // Draw the map
-  drawMap(inputHandler);
+    // Draw the map
+    drawMap(inputHandler);
 
-  // TEST Draw particle
-  drawParticles(inputHandler);
+    // TEST Draw particle
+    drawParticles(inputHandler);
 
-  // Initialize audio controller
-  var audioController = new AudioController();
-  audioController.playTimeMusic();
+    // Initialize audio controller
+    var audioController = new AudioController();
+    audioController.playTimeMusic();
 
-  var date = new Date();
-  var hour = date.getHours();
-  var dayEveningNightFilter = new Matrix4();
+    applyTimeFilters();
 
-  // Daytime: 7  - 16
-  // Evening: 5  -  6 or 17 - 20
-  // Night:   21 - 23 or 0  - 4  
+    // Load skybox texture and add cube to scene with that texture.
+    /*inputHandler.readTexture("objs/skybox.jpg", function(image) {
+        var skybox = new Skybox(texturedShader, image);
+        scene.addGeometry(skybox);
+    })*/
 
-  if(hour >= 21 || hour <= 4) //Night filter
-  {
-    dayEveningNightFilter.elements = new Float32Array( [0.293, 0.369, 0.489, 0,
-                                                        0.249, 0.286, 0.468, 0,
-                                                        0.172, 0.134, 0.431, 0,
-                                                        0    , 0    , 0    , 1]) ;
-  }
-  else if(hour >= 5 && hour <= 6 || hour >= 17 && hour <= 20) //Evening filter
-  {
-    dayEveningNightFilter.elements = new Float32Array( [0.493, 0.469, 0.189, 0,
-                                                        0.449, 0.386, 0.168, 0,
-                                                        0.372, 0.234, 0.131, 0,
-                                                        0    , 0    , 0    , 1]) ;
-  }
-  else //No filter (day)
-  {
-    dayEveningNightFilter.elements = new Float32Array( [1, 0, 0, 0,
-                                                        0, 1, 0, 0,
-                                                        0, 0, 1, 0,
-                                                        0, 0, 0, 1]) ;
-  }
+    /*// Load grass texture and add ground plane to scene with that texture.
+    inputHandler.readTexture("objs/grass.jpg", function(image) {
+        this.player = new Player(texturedShader, image);
+        scene.addGeometry(this.player);
+    })*/
 
-  texturedShader.setUniform("u_dayEveningNightFilter", dayEveningNightFilter.elements);
-  // Load skybox texture and add cube to scene with that texture.
-  /*inputHandler.readTexture("objs/skybox.jpg", function(image) {
-      var skybox = new Skybox(texturedShader, image);
-      scene.addGeometry(skybox);
-  })*/
-
-  /*// Load grass texture and add ground plane to scene with that texture.
-  inputHandler.readTexture("objs/grass.jpg", function(image) {
-      this.player = new Player(texturedShader, image);
-      scene.addGeometry(this.player);
-  })*/
-
-  // Initialize renderer with scene and camera
-  renderer = new Renderer(gl, scene, camera);
-  renderer.start();
+    // Initialize renderer with scene and camera
+    renderer = new Renderer(gl, scene, camera);
+    renderer.start();
 }
 
 // ========== FUNCTIONS ========== //
@@ -435,4 +406,39 @@ function drawParticles(inputHandler)
         inputHandler.particle = new Particle(texturedShader, image);
         inputHandler.scene.addGeometry(inputHandler.particle);
     });
+}
+
+function applyTimeFilters()
+{
+    var date = new Date();
+    var hour = date.getHours();
+    var dayEveningNightFilter = new Matrix4();
+
+    // Daytime: 7  - 16
+    // Evening: 5  -  6 or 17 - 20
+    // Night:   21 - 23 or 0  - 4  
+
+    if(hour >= 21 || hour <= 4) //Night filter
+    {
+        dayEveningNightFilter.elements = new Float32Array( [0.293, 0.369, 0.489, 0,
+                                                            0.249, 0.286, 0.468, 0,
+                                                            0.172, 0.134, 0.431, 0,
+                                                            0    , 0    , 0    , 1]) ;
+    }
+    else if(hour >= 5 && hour <= 6 || hour >= 17 && hour <= 20) //Evening filter
+    {
+        dayEveningNightFilter.elements = new Float32Array( [0.493, 0.469, 0.189, 0,
+                                                            0.449, 0.386, 0.168, 0,
+                                                            0.372, 0.234, 0.131, 0,
+                                                            0    , 0    , 0    , 1]) ;
+    }
+    else //No filter (day)
+    {
+        dayEveningNightFilter.elements = new Float32Array( [1, 0, 0, 0,
+                                                            0, 1, 0, 0,
+                                                            0, 0, 1, 0,
+                                                            0, 0, 0, 1]) ;
+    }
+
+    texturedShader.setUniform("u_dayEveningNightFilter", dayEveningNightFilter.elements);
 }
