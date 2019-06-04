@@ -202,7 +202,7 @@ class Villager extends Geometry {
       {
         // If it is ourselves, just skip
         // If there is a collision between myself and another geometry, reverse direction
-        if(geometriesArr[geoI] == this) { continue; }
+        if(geometriesArr[geoI] == this || geometriesArr == inputHandler.player) { continue; }
         else if(inputHandler.testAABBAABB(this, geometriesArr[geoI])) {
           this.walkDirection = (this.walkDirection + 180) % 360;
           if(this.walkDirection < 0) {this.walkDirection = (Math.random() * 360);}
