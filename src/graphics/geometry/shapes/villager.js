@@ -35,7 +35,7 @@ class Villager extends Geometry {
           this.dialogue = this.dialogueGenerator.generate();
 
           // Random walking variables
-          this.speed = 0.005;
+          this.speed = 0.01;
           this.walkDirection = Math.random() * 360;
           this.walkDuration = Math.floor((Math.random() * 120) + 130);
 
@@ -195,8 +195,22 @@ class Villager extends Geometry {
     }
 
     // TO-DO: check collision for villagers and other geometries
-    randomWalk(geometries)
+    randomWalk(geometriesArr, inputHandler)
     {
+      // Check collision with other villagers and other geometries
+      for(var geoI = 0; geoI < geometriesArr.length; geoI++)
+      {
+        // If it is ourselves, just skip
+        // If there is a collision between myself and another geometry, reverse direction
+        if(geometriesArr[geoI] == this) { continue; }
+        else if(inputHandler.testAABBAABB(this, geometriesArr[geoI])) {
+          this.walkDirection = (this.walkDirection + 180) % 360;
+          if(this.walkDirection < 0) {this.walkDirection = (Math.random() * 360);}
+          //this.walkDuration = Math.floor((Math.random() * 120) + 130);
+          console.log("Villager collided");
+        }
+      }
+
       // If timer is up, switch directions
       if(this.walkDuration == 0)
       {

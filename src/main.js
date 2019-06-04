@@ -343,7 +343,7 @@ function drawMap(inputHandler)
     {
         for(var x = -16; x < 16; x++)
         {
-            if(Math.random() < 0.01) //1% chance
+            if(Math.random() < 0.015) //1.5% chance
             {
                 drawTree(inputHandler, x, z);
             }
@@ -362,6 +362,11 @@ function drawVillagers(inputHandler)
         var isabelle = new Villager(texturedShader, image, "Isabelle", -2, 0, 2);
         inputHandler.scene.addGeometry(isabelle);
     });
+
+    inputHandler.readTexture("objs/playertexture3.png", function(image) {
+        var maple = new Villager(texturedShader, image, "Maple", 0, 0, -2.5);
+        inputHandler.scene.addGeometry(maple);
+    });
 }
 
 function updateVillagers(inputHandler)
@@ -376,7 +381,9 @@ function updateVillagers(inputHandler)
             // If we are not talking to anyone, let everyone randomly walk
             if(inputHandler.talkingToVillager == null || inputHandler.talkingToVillager.name != geometriesArr[geoI].name) 
             {
-                geometriesArr[geoI].randomWalk();
+                // Pass the geometries array to check for collisions
+                // Pass in inputHandler to use testAABBAABB function
+                geometriesArr[geoI].randomWalk(geometriesArr, inputHandler);
             }
             else // If player is talking to the villager, make them face the player
             {
