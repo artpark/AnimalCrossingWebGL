@@ -107,12 +107,12 @@ class Player extends Geometry {
         {
           vertex1.texCoord = [0.0, 0.0];
           vertex2.texCoord = [0.5, 0.0];
-          vertex3.texCoord = [0.4, 0.65];
+          vertex3.texCoord = [0.4, 0.55];
           vertex4.texCoord = [0.0, 0.0];
-          vertex5.texCoord = [0.4, 0.65];
-          vertex6.texCoord = [0.1, 0.65];
+          vertex5.texCoord = [0.4, 0.55];
+          vertex6.texCoord = [0.1, 0.55];
         }
-        else  // side faces
+        /*else  // side faces
         {
           vertex1.texCoord = [0.0, 0.1];
           vertex2.texCoord = [0.1, 0.1];
@@ -120,6 +120,15 @@ class Player extends Geometry {
           vertex4.texCoord = [0.0, 0.1];
           vertex5.texCoord = [0.1, 0.1];
           vertex6.texCoord = [0.0, 0.1];
+        }*/
+        else  // side faces
+        {
+          vertex1.texCoord = [0.5, 0.0];
+          vertex2.texCoord = [1.0, 0.0];
+          vertex3.texCoord = [0.9, 0.55];
+          vertex4.texCoord = [0.5, 0.0];
+          vertex5.texCoord = [0.9, 0.55];
+          vertex6.texCoord = [0.5, 0.55];
         }
         // push vertices
         vertices.push(vertex1);
