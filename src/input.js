@@ -26,10 +26,14 @@ class InputHandler {
         this.right = false;
         this.up = false;
         this.down = false;
+
+        // Sprint booleans
+        this.shift = false;
         this.sprint = false;
 
-        // Particle test float
-        this.particleTick = 0;
+        // Sprint constants
+        this.sprintSpeed = 0.6;
+        this.walkSpeed = 0.3;
 
         // Movement constants
         this.truckSpeed = 0.3;
@@ -94,6 +98,8 @@ class InputHandler {
       // Movement left + up
       if (_inputHandler.left && _inputHandler.up)
       {
+         _inputHandler.sprintCheck();
+
          _inputHandler.camera.truck(-_inputHandler.truckSpeed * _inputHandler.diagScalar);
          _inputHandler.camera.dolly(-_inputHandler.dollySpeed * _inputHandler.diagScalar);
          if(Math.abs(225 - currAngle) > Math.abs(-135 - currAngle)) {_inputHandler.player.faceAngle(-135);}
@@ -102,6 +108,8 @@ class InputHandler {
       // Movement right + up
       else if (_inputHandler.right && _inputHandler.up)
       {
+         _inputHandler.sprintCheck();
+
          _inputHandler.camera.truck( _inputHandler.truckSpeed * _inputHandler.diagScalar);
          _inputHandler.camera.dolly(-_inputHandler.dollySpeed * _inputHandler.diagScalar);
          if(Math.abs(135 - currAngle) > Math.abs(-255 - currAngle)) {_inputHandler.player.faceAngle(-255);}
@@ -110,6 +118,8 @@ class InputHandler {
       // Movement right + down
       else if (_inputHandler.right && _inputHandler.down)
       {
+         _inputHandler.sprintCheck();
+
          _inputHandler.camera.truck( _inputHandler.truckSpeed * _inputHandler.diagScalar);
          _inputHandler.camera.dolly( _inputHandler.dollySpeed * _inputHandler.diagScalar);
          if(Math.abs(45 - currAngle) > Math.abs(-315 - currAngle)) {_inputHandler.player.faceAngle(-315);}
@@ -118,6 +128,8 @@ class InputHandler {
       // Movement left + down
       else if (_inputHandler.left && _inputHandler.down)
       {
+         _inputHandler.sprintCheck();
+
          _inputHandler.camera.truck(-_inputHandler.truckSpeed * _inputHandler.diagScalar);
          _inputHandler.camera.dolly( _inputHandler.dollySpeed * _inputHandler.diagScalar);
          if(Math.abs(315 - currAngle) > Math.abs(-45 - currAngle)) {_inputHandler.player.faceAngle(-45);}
@@ -126,6 +138,8 @@ class InputHandler {
       // Movement left
       else if(_inputHandler.left) 
       {
+          _inputHandler.sprintCheck();
+
           _inputHandler.camera.truck(-_inputHandler.truckSpeed);
           if(Math.abs(270 - currAngle) > Math.abs(-90 - currAngle)) {_inputHandler.player.faceAngle(-90);
                                                                      _inputHandler.particle.faceAngle(-90);}
@@ -135,6 +149,8 @@ class InputHandler {
       // Movement right
       else if(_inputHandler.right)
       {
+          _inputHandler.sprintCheck();
+
           _inputHandler.camera.truck(_inputHandler.truckSpeed);
           if(Math.abs(90 - currAngle) > Math.abs(-270 - currAngle)) {_inputHandler.player.faceAngle(-270);
                                                                      _inputHandler.particle.faceAngle(-270);}
@@ -144,6 +160,8 @@ class InputHandler {
       // Movement up
       else if(_inputHandler.up)
       {
+          _inputHandler.sprintCheck();
+
           _inputHandler.camera.dolly(-_inputHandler.dollySpeed);
           if(Math.abs(180 - currAngle) > Math.abs(-180 - currAngle)) {_inputHandler.player.faceAngle(-180);
                                                                       _inputHandler.particle.faceAngle(-180);}
@@ -153,6 +171,8 @@ class InputHandler {
       // Movement down
       else if(_inputHandler.down)
       {
+          _inputHandler.sprintCheck();
+
           _inputHandler.camera.dolly(_inputHandler.dollySpeed);
           if(Math.abs(0 - currAngle) > Math.abs(360 - currAngle)) {_inputHandler.player.faceAngle(360);
                                                                    _inputHandler.particle.faceAngle(360);}
@@ -161,14 +181,22 @@ class InputHandler {
           else {_inputHandler.player.faceAngle(0);
                 _inputHandler.particle.faceAngle(0);}
       }
-
+      // Move player to center of the screen
       _inputHandler.player.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
+    }
 
-       if (this.particleTick == 0)
-       {
-          _inputHandler.particle.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
-       }
-       this.particleTick = (this.particleTick + 1) % 30;
+    sprintCheck()
+    {
+      if (_inputHandler.shift) {
+           _inputHandler.sprint = true;
+           _inputHandler.truckSpeed = _inputHandler.sprintSpeed;
+           _inputHandler.dollySpeed = _inputHandler.sprintSpeed;
+         }
+         else{
+           _inputHandler.sprint = false;
+           _inputHandler.truckSpeed = _inputHandler.walkSpeed;
+           _inputHandler.dollySpeed = _inputHandler.walkSpeed;
+         }
     }
 
     testAABBAABB(geometryA, geometryB)
@@ -192,20 +220,17 @@ class InputHandler {
         //console.log("key down", keyName);
 
         if(keyName == "Shift") {
-          //if (this.left || this.right || this.up || this.down) {
-            this.sprint = true;
-          //}
-          this.truckSpeed = 0.6;
-          this.dollySpeed = 0.6;
+          _inputHandler.shift = true; 
         }
         if(keyName == "a" || keyName == "A" || keyName == "ArrowLeft") {
           _inputHandler.left = true;
         }
         if(keyName == "d" || keyName == "D" || keyName == "ArrowRight") {
           _inputHandler.right = true;
+          
         }
         if(keyName == "w" || keyName == "W" || keyName == "ArrowUp") {
-          _inputHandler.up = true;
+          _inputHandler.up = true
         }
         if(keyName == "s" || keyName == "S" || keyName == "ArrowDown") {
           _inputHandler.down = true;
@@ -217,25 +242,24 @@ class InputHandler {
         console.log("key up", keyName);
     
         if(keyName == "Shift") {
-          this.sprint = false;
-          this.truckSpeed = 0.3;
-          this.dollySpeed = 0.3;
+          _inputHandler.shift = false;
+          _inputHandler.sprint = false;
         }
         if(keyName == "a" || keyName == "A" || keyName == "ArrowLeft") {
           _inputHandler.left = false;
-          //_inputHandler.sprint = false;
+          _inputHandler.sprint = false;
         }
         if(keyName == "d" || keyName == "D" || keyName == "ArrowRight") {
           _inputHandler.right = false;
-          //_inputHandler.sprint = false;
+          _inputHandler.sprint = false;
         }
         if(keyName == "w" || keyName == "W" || keyName == "ArrowUp") {
           _inputHandler.up = false;
-          //_inputHandler.sprint = false;
+          _inputHandler.sprint = false;
         }
         if(keyName == "s" || keyName == "S" || keyName == "ArrowDown") {
           _inputHandler.down = false;
-          //_inputHandler.sprint = false;
+          _inputHandler.sprint = false;
         }
       }
 

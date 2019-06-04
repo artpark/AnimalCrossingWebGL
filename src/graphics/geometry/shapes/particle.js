@@ -39,7 +39,6 @@ class Particle extends Geometry {
 
   render()
   {
-      //console.log(this.currentAngle);
       var transformation = new Matrix4();
       transformation.set(this.modelMatrix);
       var scaleMatrix = new Matrix4();
@@ -57,14 +56,11 @@ class Particle extends Geometry {
          }
          else
          {
+            this.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
             this.timeElapsed = 0.0;
          }
          transformation.multiply(scaleMatrix);
          this.shader.setUniform("u_ModelMatrix", transformation.elements);
-         //this.shader.setUniform("u_ModelMatrix", this.modelMatrix.elements);
-
-         //this.modelMatrix.elements
-         //super.render();
       }
       // if walking
       else{
@@ -74,7 +70,15 @@ class Particle extends Geometry {
          }
          transformation.multiply(scaleMatrix);
          this.shader.setUniform("u_ModelMatrix", transformation.elements);
+         
       }
+  }
+
+  moveToCenter()
+  {
+      //console.log(this.timeElapsed);
+      //if (this.timeElapsed == 0.0)
+         this.modelMatrix.setTranslate(_inputHandler.camera.eye.elements[0], 0, _inputHandler.camera.eye.elements[2] + 3);
   }
 
   faceAngle(turnToAngle)
