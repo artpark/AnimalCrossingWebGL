@@ -67,7 +67,7 @@ class Player extends Geometry {
 
       var shadowW = 0.28;
 
-      var torsoW =    0.25;            // scalar for torso width
+      var torsoW =    0.28;            // scalar for torso width ; prev 25
       var torsoH =    0.6;            // scalar for torso height
       var topScalar = 0.7;            // scalar for torso cone shape
 
@@ -85,9 +85,6 @@ class Player extends Geometry {
         vertex1.texCoord = [0.0, 0.9999];
         vertex2.texCoord = [0.1, 0.9999];
         vertex3.texCoord = [0.1, 1.0];
-        /*vertex1.color = [0.0, 0.0, 0.0, 0.5];
-        vertex2.color = [0.0, 0.0, 0.0, 0.5];
-        vertex3.color = [0.0, 0.0, 0.0, 0.5];*/
         // push vertices
         vertices.push(vertex1);
         vertices.push(vertex2);
@@ -108,12 +105,6 @@ class Player extends Geometry {
         
         if (i == 4) // front face
         {
-          /*vertex1.texCoord = [0.0, -0.5];
-          vertex2.texCoord = [0.5, -0.5];
-          vertex3.texCoord = [0.4, 0.65];
-          vertex4.texCoord = [0.0, -0.5];
-          vertex5.texCoord = [0.4, 0.65];
-          vertex6.texCoord = [0.1, 0.65];*/
           vertex1.texCoord = [0.0, 0.0];
           vertex2.texCoord = [0.5, 0.0];
           vertex3.texCoord = [0.4, 0.65];

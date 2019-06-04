@@ -65,21 +65,44 @@ class Villager extends Geometry {
     {
       var vertices = []
       var segConstant = Math.PI / 3;  // for vertice generation calculations
-      var torsoW =    0.2;            // scalar for torso width
+
+      var shadowW = 0.28;
+
+      var torsoW =    0.28;            // scalar for torso width
       var torsoH =    0.6;            // scalar for torso height
       var topScalar = 0.7;            // scalar for torso cone shape
 
       var headW = 0.3;
       var headH = 0.4;
 
+      var hairW = 0.2;
+      var hairH = 0.9;
+
+      // generate shadow vertices
+      for (var i = 0; i < 6; i++)
+      {
+        // create vertices
+        var vertex1 = new Vertex(  shadowW*Math.cos((i+1) * segConstant)+Tx, 0.01, shadowW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex2 = new Vertex(  shadowW*Math.cos(    i * segConstant)+Tx, 0.01, shadowW * Math.sin(    i * segConstant)+Tz);
+        var vertex3 = new Vertex(                                        Tx, 0.01,                                         Tz);      
+        // set vertex color
+        vertex1.texCoord = [0.0, 0.9999];
+        vertex2.texCoord = [0.1, 0.9999];
+        vertex3.texCoord = [0.1, 1.0];
+        // push vertices
+        vertices.push(vertex1);
+        vertices.push(vertex2);
+        vertices.push(vertex3);
+      }
+
       // generate torso vertices
       for (var i = 0; i < 6; i++)
       {
         // create vertices
-        var vertex1 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0, torsoW * Math.sin(    i * segConstant)+Tz);
-        var vertex2 = new Vertex(             torsoW*Math.cos((i+1) * segConstant)+Tx,      0, torsoW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex1 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0.3, torsoW * Math.sin(    i * segConstant)+Tz);
+        var vertex2 = new Vertex(             torsoW*Math.cos((i+1) * segConstant)+Tx,      0.3, torsoW * Math.sin((i+1) * segConstant)+Tz);
         var vertex3 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
-        var vertex4 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0, torsoW * Math.sin(    i * segConstant)+Tz);
+        var vertex4 = new Vertex(             torsoW*Math.cos(    i * segConstant)+Tx,      0.3, torsoW * Math.sin(    i * segConstant)+Tz);
         var vertex5 = new Vertex( topScalar * torsoW*Math.cos((i+1) * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin((i+1) * segConstant)+Tz);
         var vertex6 = new Vertex( topScalar * torsoW*Math.cos(    i * segConstant)+Tx, torsoH, topScalar * torsoW * Math.sin(    i * segConstant)+Tz);
         // set texture coordinates
@@ -191,6 +214,199 @@ class Villager extends Geometry {
         vertices.push(vertex9);
       }
   
+      // ear vertices
+      {
+        // right ear
+        {
+          // inner face
+          var vertex1 = new Vertex(-0.35+Tx,  0.6+Ty, -0.2+Tz);
+          var vertex2 = new Vertex(-0.35+Tx, 0.6+Ty, 0.2+Tz);
+          var vertex3 = new Vertex(-0.3+Tx, 1.0+Ty, 0.1+Tz);
+          var vertex4 = new Vertex(-0.35+Tx,  0.6+Ty, -0.2+Tz);
+          var vertex5 = new Vertex(-0.3+Tx, 1.0+Ty, 0.1+Tz);
+          var vertex6 = new Vertex(-0.3+Tx, 1.0+Ty, -0.1+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertex4.texCoord = [0.039, 0.675];
+          vertex5.texCoord = [0.041, 0.675];
+          vertex6.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          vertices.push(vertex4);
+          vertices.push(vertex5);
+          vertices.push(vertex6);
+          // outer face
+          vertex1 = new Vertex(-0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex2 = new Vertex(-0.45+Tx, 0.7+Ty, 0.2+Tz);
+          vertex4 = new Vertex(-0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex4.texCoord = [0.039, 0.675];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          vertices.push(vertex4);
+          vertices.push(vertex5);
+          vertices.push(vertex6);
+          // bottom face
+          vertex1 = new Vertex(-0.35+Tx,  0.6+Ty, -0.2+Tz);
+          vertex2 = new Vertex(-0.35+Tx, 0.6+Ty, 0.2+Tz);
+          vertex3 = new Vertex(-0.45+Tx,  0.7+Ty, -0.2+Tz);
+
+          vertex4 = new Vertex(-0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex5 = new Vertex(-0.45+Tx,  0.7+Ty, 0.2+Tz);
+          vertex6 = new Vertex(-0.35+Tx, 0.6+Ty, 0.2+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertex4.texCoord = [0.039, 0.675];
+          vertex5.texCoord = [0.041, 0.675];
+          vertex6.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          vertices.push(vertex4);
+          vertices.push(vertex5);
+          vertices.push(vertex6);
+          // front face
+          vertex1 = new Vertex(-0.45+Tx,  0.7+Ty, 0.2+Tz);
+          vertex2 = new Vertex(-0.35+Tx, 0.6+Ty, 0.2+Tz);
+          vertex3 = new Vertex(-0.3+Tx, 1.0+Ty, 0.1+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          // back face
+          vertex1 = new Vertex(-0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex2 = new Vertex(-0.35+Tx, 0.6+Ty, -0.2+Tz);
+          vertex3 = new Vertex(-0.3+Tx, 1.0+Ty, -0.1+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+        }
+
+        // right ear
+        {
+          // inner face
+          var vertex1 = new Vertex(0.35+Tx,  0.6+Ty, -0.2+Tz);
+          var vertex2 = new Vertex(0.35+Tx, 0.6+Ty, 0.2+Tz);
+          var vertex3 = new Vertex(0.3+Tx, 1.0+Ty, 0.1+Tz);
+          var vertex4 = new Vertex(0.35+Tx,  0.6+Ty, -0.2+Tz);
+          var vertex5 = new Vertex(0.3+Tx, 1.0+Ty, 0.1+Tz);
+          var vertex6 = new Vertex(0.3+Tx, 1.0+Ty, -0.1+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertex4.texCoord = [0.039, 0.675];
+          vertex5.texCoord = [0.041, 0.675];
+          vertex6.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          vertices.push(vertex4);
+          vertices.push(vertex5);
+          vertices.push(vertex6);
+          // outer face
+          vertex1 = new Vertex(0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex2 = new Vertex(0.45+Tx, 0.7+Ty, 0.2+Tz);
+          vertex4 = new Vertex(0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex4.texCoord = [0.039, 0.675];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          vertices.push(vertex4);
+          vertices.push(vertex5);
+          vertices.push(vertex6);
+          // bottom face
+          vertex1 = new Vertex(0.35+Tx,  0.6+Ty, -0.2+Tz);
+          vertex2 = new Vertex(0.35+Tx, 0.6+Ty, 0.2+Tz);
+          vertex3 = new Vertex(0.45+Tx,  0.7+Ty, -0.2+Tz);
+
+          vertex4 = new Vertex(0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex5 = new Vertex(0.45+Tx,  0.7+Ty, 0.2+Tz);
+          vertex6 = new Vertex(0.35+Tx, 0.6+Ty, 0.2+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertex4.texCoord = [0.039, 0.675];
+          vertex5.texCoord = [0.041, 0.675];
+          vertex6.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          vertices.push(vertex4);
+          vertices.push(vertex5);
+          vertices.push(vertex6);
+          // front face
+          vertex1 = new Vertex(0.45+Tx,  0.7+Ty, 0.2+Tz);
+          vertex2 = new Vertex(0.35+Tx, 0.6+Ty, 0.2+Tz);
+          vertex3 = new Vertex(0.3+Tx, 1.0+Ty, 0.1+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+          // back face
+          vertex1 = new Vertex(0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex2 = new Vertex(0.35+Tx, 0.6+Ty, -0.2+Tz);
+          vertex3 = new Vertex(0.3+Tx, 1.0+Ty, -0.1+Tz);
+          vertex1.texCoord = [0.039, 0.675];
+          vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
+          vertices.push(vertex1);
+          vertices.push(vertex2);
+          vertices.push(vertex3);
+        }
+      }
+
+      // generate hair vertices
+      for (var i = 0; i < 6; i++)
+      {
+        // create vertices
+        var vertex1 = new Vertex(  hairW*Math.cos(    i * segConstant)+Tx,   0.2 + hairH, hairW * Math.sin(    i * segConstant)+Tz);
+        var vertex2 = new Vertex(  hairW*Math.cos((i+1) * segConstant)+Tx,   0.2 + hairH, hairW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex3 = new Vertex(  hairW*Math.cos((i+1) * segConstant)+Tx, headH + hairH, hairW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex4 = new Vertex(  hairW*Math.cos(    i * segConstant)+Tx,   0.2 + hairH, hairW * Math.sin(    i * segConstant)+Tz);
+        var vertex5 = new Vertex(  hairW*Math.cos((i+1) * segConstant)+Tx, headH + hairH, hairW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex6 = new Vertex(  hairW*Math.cos(    i * segConstant)+Tx, headH + hairH, hairW * Math.sin(    i * segConstant)+Tz);
+
+        var vertex7 = new Vertex(  hairW*Math.cos((i+1) * segConstant)+Tx, headH + hairH, hairW * Math.sin((i+1) * segConstant)+Tz);
+        var vertex8 = new Vertex(  hairW*Math.cos(    i * segConstant)+Tx, headH + hairH, hairW * Math.sin(    i * segConstant)+Tz);
+        var vertex9 = new Vertex(                                      Tx, headH + hairH+0.1,                                       Tz);
+        // set texture coordinates
+        vertex1.texCoord = [0.039, 0.675];
+        vertex2.texCoord = [0.041, 0.675];
+        vertex3.texCoord = [0.04, 0.68];
+        vertex4.texCoord = [0.039, 0.675];
+        vertex5.texCoord = [0.041, 0.675];
+        vertex6.texCoord = [0.04, 0.68];
+        //top
+        vertex7.texCoord = [0.039, 0.675];
+        vertex8.texCoord = [0.041, 0.675];
+        vertex9.texCoord = [0.04, 0.68];
+        
+        // push vertices
+        vertices.push(vertex1);
+        vertices.push(vertex2);
+        vertices.push(vertex3);
+        vertices.push(vertex4);
+        vertices.push(vertex5);
+        vertices.push(vertex6);
+        vertices.push(vertex7);
+        vertices.push(vertex8);
+        vertices.push(vertex9);
+      }
+
         return vertices;
     }
 
