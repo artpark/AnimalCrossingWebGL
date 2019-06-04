@@ -86,9 +86,9 @@ class Villager extends Geometry {
         var vertex2 = new Vertex(  shadowW*Math.cos(    i * segConstant)+Tx, 0.01, shadowW * Math.sin(    i * segConstant)+Tz);
         var vertex3 = new Vertex(                                        Tx, 0.01,                                         Tz);      
         // set vertex color
-        vertex1.texCoord = [0.0, 0.9999];
-        vertex2.texCoord = [0.1, 0.9999];
-        vertex3.texCoord = [0.1, 1.0];
+        vertex1.texCoord = [0.345, 0.6];
+        vertex2.texCoord = [0.355, 0.6];
+        vertex3.texCoord = [0.35, 0.61];
         // push vertices
         vertices.push(vertex1);
         vertices.push(vertex2);
@@ -109,21 +109,21 @@ class Villager extends Geometry {
         
         if (i == 4) // front face
         {
-          vertex1.texCoord = [0.0, -0.5];
-          vertex2.texCoord = [0.5, -0.5];
-          vertex3.texCoord = [0.4, 0.65];
-          vertex4.texCoord = [0.0, -0.5];
-          vertex5.texCoord = [0.4, 0.65];
-          vertex6.texCoord = [0.1, 0.65];
+          vertex1.texCoord = [0.0, 0.0];
+          vertex2.texCoord = [0.5, 0.0];
+          vertex3.texCoord = [0.4, 0.5];
+          vertex4.texCoord = [0.0, 0.0];
+          vertex5.texCoord = [0.4, 0.5];
+          vertex6.texCoord = [0.1, 0.5];
         }
         else  // side faces
         {
-          vertex1.texCoord = [0.0, 0.1];
-          vertex2.texCoord = [0.1, 0.1];
-          vertex3.texCoord = [0.1, 0.1];
-          vertex4.texCoord = [0.0, 0.1];
-          vertex5.texCoord = [0.1, 0.1];
-          vertex6.texCoord = [0.0, 0.1];
+          vertex1.texCoord = [0.5, 0.0];
+          vertex2.texCoord = [1.0, 0.0];
+          vertex3.texCoord = [0.9, 0.5];
+          vertex4.texCoord = [0.5, 0.0];
+          vertex5.texCoord = [0.9, 0.5];
+          vertex6.texCoord = [0.5, 0.5];
         }
         // push vertices
         vertices.push(vertex1);
@@ -214,7 +214,7 @@ class Villager extends Geometry {
         vertices.push(vertex9);
       }
   
-      // ear vertices
+      // generate ear vertices
       {
         // right ear
         {
@@ -225,12 +225,12 @@ class Villager extends Geometry {
           var vertex4 = new Vertex(-0.35+Tx,  0.6+Ty, -0.2+Tz);
           var vertex5 = new Vertex(-0.3+Tx, 1.0+Ty, 0.1+Tz);
           var vertex6 = new Vertex(-0.3+Tx, 1.0+Ty, -0.1+Tz);
-          vertex1.texCoord = [0.039, 0.675];
-          vertex2.texCoord = [0.041, 0.675];
-          vertex3.texCoord = [0.04, 0.68];
-          vertex4.texCoord = [0.039, 0.675];
-          vertex5.texCoord = [0.041, 0.675];
-          vertex6.texCoord = [0.04, 0.68];
+          vertex1.texCoord = [0.345, 0.6];
+          vertex2.texCoord = [0.355, 0.6];
+          vertex3.texCoord = [0.35, 0.61];
+          vertex4.texCoord = [0.345, 0.6];
+          vertex5.texCoord = [0.355, 0.6];
+          vertex6.texCoord = [0.35, 0.61];
           vertices.push(vertex1);
           vertices.push(vertex2);
           vertices.push(vertex3);
@@ -241,9 +241,13 @@ class Villager extends Geometry {
           vertex1 = new Vertex(-0.45+Tx,  0.7+Ty, -0.2+Tz);
           vertex2 = new Vertex(-0.45+Tx, 0.7+Ty, 0.2+Tz);
           vertex4 = new Vertex(-0.45+Tx,  0.7+Ty, -0.2+Tz);
+          vertex3.texCoord = [0.039, 0.675];
+          vertex5.texCoord = [0.041, 0.675];
+          vertex6.texCoord = [0.039, 0.675];
           vertex1.texCoord = [0.039, 0.675];
           vertex2.texCoord = [0.041, 0.675];
           vertex4.texCoord = [0.039, 0.675];
+
           vertices.push(vertex1);
           vertices.push(vertex2);
           vertices.push(vertex3);
@@ -263,7 +267,8 @@ class Villager extends Geometry {
           vertex3.texCoord = [0.04, 0.68];
           vertex4.texCoord = [0.039, 0.675];
           vertex5.texCoord = [0.041, 0.675];
-          vertex6.texCoord = [0.04, 0.68];
+          vertex6.texCoord = [0.04, 0.68];          
+
           vertices.push(vertex1);
           vertices.push(vertex2);
           vertices.push(vertex3);
@@ -301,12 +306,13 @@ class Villager extends Geometry {
           var vertex4 = new Vertex(0.35+Tx,  0.6+Ty, -0.2+Tz);
           var vertex5 = new Vertex(0.3+Tx, 1.0+Ty, 0.1+Tz);
           var vertex6 = new Vertex(0.3+Tx, 1.0+Ty, -0.1+Tz);
-          vertex1.texCoord = [0.039, 0.675];
-          vertex2.texCoord = [0.041, 0.675];
-          vertex3.texCoord = [0.04, 0.68];
-          vertex4.texCoord = [0.039, 0.675];
-          vertex5.texCoord = [0.041, 0.675];
-          vertex6.texCoord = [0.04, 0.68];
+          vertex1.texCoord = [0.345, 0.6];
+          vertex2.texCoord = [0.355, 0.6];
+          vertex3.texCoord = [0.35, 0.61];
+          vertex4.texCoord = [0.345, 0.6];
+          vertex5.texCoord = [0.355, 0.6];
+          vertex6.texCoord = [0.35, 0.61];
+
           vertices.push(vertex1);
           vertices.push(vertex2);
           vertices.push(vertex3);
@@ -319,7 +325,11 @@ class Villager extends Geometry {
           vertex4 = new Vertex(0.45+Tx,  0.7+Ty, -0.2+Tz);
           vertex1.texCoord = [0.039, 0.675];
           vertex2.texCoord = [0.041, 0.675];
+          vertex3.texCoord = [0.04, 0.68];
           vertex4.texCoord = [0.039, 0.675];
+          vertex5.texCoord = [0.041, 0.675];
+          vertex6.texCoord = [0.04, 0.68];       
+
           vertices.push(vertex1);
           vertices.push(vertex2);
           vertices.push(vertex3);

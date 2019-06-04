@@ -353,17 +353,17 @@ function drawMap(inputHandler)
 
 function drawVillagers(inputHandler)
 {
-    inputHandler.readTexture("objs/isabelletexture2.png", function(image) {
+    inputHandler.readTexture("objs/isabelletexture.png", function(image) {
         var lucky = new Villager(texturedShader, image, "Lucky", 2, 0, 2);
         inputHandler.scene.addGeometry(lucky);
     });
 
-    inputHandler.readTexture("objs/isabelletexture2.png", function(image) {
+    inputHandler.readTexture("objs/isabelletexture.png", function(image) {
         var isabelle = new Villager(texturedShader, image, "Isabelle", -2, 0, 2);
         inputHandler.scene.addGeometry(isabelle);
     });
 
-    inputHandler.readTexture("objs/isabelletexture2.png", function(image) {
+    inputHandler.readTexture("objs/isabelletexture.png", function(image) {
         var maple = new Villager(texturedShader, image, "Maple", 0, 0, -2.5);
         inputHandler.scene.addGeometry(maple);
     });
