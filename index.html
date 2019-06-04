@@ -4,14 +4,14 @@
       <title> Animal Crossing: World Wild Web </title>
   </head>
 
-  <body onload = "main()">
-    <canvas id="webgl" width="800" height="600" style="position: absolute; z-index: 0">
+  <body onload = "main()" background = "htmlAssets/HTMLbackground.jpeg">
+    <canvas id="webgl" width="900" height="637" style="position: absolute; z-index: 0; top: 0px; left: 325px;">
       Please use a browser that supports "canvas"
     </canvas>
-    <canvas id="hud" width="800" height="600" style="position: absolute; z-index: 1">
+    <canvas id="hud" width="900" height="637" style="position: absolute; z-index: 1; top: 0px; left: 325px;">
       Please use a browser that supports "canvas"
     </canvas>
-    <canvas id="hudText" width="800" height="600" style="position: absolute; z-index: 2">
+    <canvas id="hudText" width="900" height="637" style="position: absolute; z-index: 2; top: 0px; left: 325px;">
       Please use a browser that supports "canvas"
     </canvas>
 
@@ -74,5 +74,25 @@
     <script src = "src/input.js"></script>
     <script src = "src/dialogueGenerator.js"></script>
     <script src = "src/audioController.js"></script>
+
+    <!-- Roll credits -->
+    <style>
+      a:link {
+        color: wheat;
+      }
+      a:visited {
+        color: wheat;
+      }
+    </style>
+
+    <p>
+      <span style="position: absolute; color:wheat; left: 5px; bottom: 5px; font-weight:bold; display: inline;">
+        Thanut (Art) Parkeenvincha | Terence So
+      </span>
+      <span style="position: absolute; color:wheat; right: 5px; bottom: 5px; font-weight:bold; display: inline;">
+        <a href="https://github.com/artpark/AnimalCrossingWebGL" >GitHub</a>
+      </span>
+      
+    </p> 
   </body>
 </html>
